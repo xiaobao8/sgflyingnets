@@ -22,7 +22,7 @@ export default function RootLayout({
     <html lang="zh-CN" className="fonts-loaded">
       <body className="font-sans antialiased bg-cream text-ink-900">
         <Script id="ai-assistant-config" strategy="beforeInteractive">
-          {`window.__AI_ASSISTANT_API__="${process.env.NEXT_PUBLIC_AI_ASSISTANT_API || 'https://20.188.26.9:8000'}";`}
+          {`window.__AI_ASSISTANT_API__="${process.env.NEXT_PUBLIC_AI_ASSISTANT_API || 'https://www.sgflyingnets.com'}";`}
         </Script>
         <Script src="/ai-assistant-widget.js" strategy="lazyOnload" />
         <LocaleProvider>

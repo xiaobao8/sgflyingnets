@@ -5,7 +5,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthFromCookies } from '@/lib/auth'
 
-const AI_BASE = process.env.AI_ASSISTANT_API || 'https://20.188.26.9:8000/'
+const AI_BASE = process.env.AI_ASSISTANT_API || 'https://www.sgflyingnets.com'
 
 export async function GET(req: NextRequest) {
   const auth = await getAuthFromCookies()
