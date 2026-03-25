@@ -241,13 +241,9 @@ Flyingnets相信：真正的智能运营，不是堆砌工具，而是让 AI 成
   admins: [],
 }
 
-// 可被环境变量 ADMIN_INITIAL_PASSWORD 覆盖
-const initialPassword =
-  process.env.ADMIN_INITIAL_PASSWORD || 'EoMYW5wsaKDS3rPa890CVLpIhlNe'
-const hash = bcrypt.hashSync(initialPassword, 10)
+const hash = bcrypt.hashSync('admin123', 10)
 store.admins = [{ id: 1, username: 'admin', password_hash: hash }]
 
 ensureDir()
 fs.writeFileSync(DB_FILE, JSON.stringify(store, null, 2), 'utf-8')
 console.log('Seed data written to', DB_FILE)
-

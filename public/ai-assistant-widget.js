@@ -2,12 +2,11 @@
  * AI 营销小助手 - 悬浮球组件
  * 适配现有网站，可嵌入任意页面
  * 界面语言与系统语言一致，AI 按提问者语言回复
- * 用法：<script src="/ai-assistant-widget.js"></script>
- * 可选：data-api 属性指定后端地址，默认走同源代理
+ * 用法：<script src="/ai-assistant-widget.js" data-api="http://localhost:8000"></script>
  */
 (function () {
   const script = document.currentScript;
-  const API_BASE = window.__AI_ASSISTANT_API__ || script?.getAttribute("data-api") || "";
+  const API_BASE = window.__AI_ASSISTANT_API__ || script?.getAttribute("data-api") || "http://localhost:8000";
 
   // 从系统语言获取 locale（与 LocaleProvider 一致）
   function getLocale() {
@@ -295,4 +294,3 @@
     }
   });
 })();
-

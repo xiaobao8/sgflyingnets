@@ -41,4 +41,4 @@ npm run orbstack   # 或 npm run preview
 
 - **官网**：http://localhost:3000 或 http://flyingnets.hp.orb.local
 - **管理后台**：http://localhost:3000/admin
-- **默认账号**：admin / 初始密码见仓库 `README`（或 `ADMIN_INITIAL_PASSWORD`）
+- **默认账号**：admin / admin123

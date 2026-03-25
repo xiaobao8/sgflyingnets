@@ -83,10 +83,8 @@ export default function AdminLoginPage() {
             </button>
           </form>
 
-          <p className="mt-8 text-center text-slate-400 text-xs leading-relaxed">
-            默认用户名 <span className="text-slate-500">admin</span>；初始密码见项目{' '}
-            <code className="text-slate-500">README</code>，或通过环境变量{' '}
-            <code className="text-slate-500">ADMIN_INITIAL_PASSWORD</code> 配置。
+          <p className="mt-8 text-center text-slate-400 text-xs">
+            默认账号: admin / admin123
           </p>
         </div>
       </motion.div>

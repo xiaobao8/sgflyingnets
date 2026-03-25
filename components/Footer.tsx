@@ -29,7 +29,7 @@ export function Footer({ config }: { config: Record<string, string> }) {
           </div>
           <div>
             <p className="text-ink-500 text-sm font-medium mb-4">{t.footer.contactUs}</p>
-          {/*  <p className="text-ink-400 text-sm">+86-400-960-8690</p> */}
+            {/* <p className="text-ink-400 text-sm">+86-400-960-8690</p> */}
             <a href="mailto:sales@sgflyingnets.com" className="text-ink-400 hover:text-gold-400 text-sm block mt-2 transition-colors">sales@sgflyingnets.com</a>
           </div>
           <div>

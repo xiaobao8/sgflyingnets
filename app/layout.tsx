@@ -10,7 +10,6 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Flyingnets | AI · Security · Global',
   description: 'Flyingnets — Singapore-headquartered. AI-powered enterprise efficiency and security solutions for enterprises worldwide.',
-  keywords: 'Flyingnets, AI, Security, Cloud, Global, Singapore, Asia-Pacific',
 }
 
 export default function RootLayout({
@@ -21,6 +20,9 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className="fonts-loaded">
       <body className="font-sans antialiased bg-cream text-ink-900">
+        <Script id="ai-assistant-config" strategy="beforeInteractive">
+          {`window.__AI_ASSISTANT_API__="${process.env.NEXT_PUBLIC_AI_ASSISTANT_API || 'http://localhost:8000'}";`}
+        </Script>
         <Script src="/ai-assistant-widget.js" strategy="lazyOnload" />
         <LocaleProvider>
           <ContentSyncNotifier />
@@ -30,4 +32,3 @@ export default function RootLayout({
     </html>
   )
 }
-

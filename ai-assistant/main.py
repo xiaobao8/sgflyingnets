@@ -27,12 +27,6 @@ from app.materials.library_service import match_material_for_email
 # 全局向量库
 kb_store = KnowledgeVectorStore()
 
-CHAT_HARD_RULES = """【固定约束（始终生效）】
-- 只围绕 Flyingnets 业务咨询作答；与业务无关的问题，用一句话礼貌拒答并引导回业务场景。
-- 禁止臆测或编造（价格、客户案例、技术参数、交付时间等）；不确定就明确说“暂无法确认”并追问关键信息。
-- 回复保持精简：优先短句，避免空话与重复，禁止长篇泛泛而谈。
-- 输出纯文本，不使用 Markdown 标题、代码块、表格。"""
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -109,7 +103,6 @@ async def chat(req: ChatRequest):
 
     # 2. 从管理后台读取提示词
     sys_prompt = await get_chat_prompt()
-    sys_prompt += f"\n\n{CHAT_HARD_RULES}"
     # 语言指令：界面语言为默认；若提问者用其他语言，则用该语言回复
     locale = (req.locale or "zh").lower()
     if locale in ("en", "ja", "zh"):
