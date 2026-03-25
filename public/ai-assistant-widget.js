@@ -6,7 +6,7 @@
  */
 (function () {
   const script = document.currentScript;
-  const API_BASE = window.__AI_ASSISTANT_API__ || script?.getAttribute("data-api") || "http://localhost:8000";
+  const API_BASE = window.__AI_ASSISTANT_API__ || "http://20.188.26.9:8000";
 
   // 从系统语言获取 locale（与 LocaleProvider 一致）
   function getLocale() {
