@@ -12,7 +12,7 @@ npm run build
 echo ">>> 启动服务..."
 echo ""
 echo "✅ 请在浏览器打开: http://localhost:3000"
-echo "   管理后台: http://localhost:3000/admin (admin，密码见 README)"
+echo "   管理后台: http://localhost:3000/admin (admin / admin123)"
 echo ""
 echo "按 Ctrl+C 停止"
 echo ""

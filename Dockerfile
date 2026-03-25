@@ -32,7 +32,7 @@ RUN mkdir -p /app/data /app/public/uploads && chown -R nextjs:nodejs /app/data /
 
 USER nextjs
 
-EXPOSE 8080
+EXPOSE 3000
 
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"

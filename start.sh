@@ -21,7 +21,7 @@ if curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/ | grep -q 200; 
   echo "  http://127.0.0.1:3000"
   echo ""
   echo "管理后台：http://localhost:3000/admin"
-  echo "管理后台：admin，初始密码见 README 或 ADMIN_INITIAL_PASSWORD"
+  echo "默认账号：admin / admin123"
   echo ""
 else
   echo "❌ 无法访问，请检查："
