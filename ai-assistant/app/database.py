@@ -175,3 +175,7 @@ async def init_db():
                 await conn.execute(text(idx_sql))
             except Exception:
                 pass
+
+    from app.config_store import seed_default_chat_prompts_if_missing
+
+    await seed_default_chat_prompts_if_missing()

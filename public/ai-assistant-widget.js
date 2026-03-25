@@ -8,15 +8,19 @@
   const script = document.currentScript;
   const API_BASE = window.__AI_ASSISTANT_API__ || "https://www.sgflyingnets.com";
 
-  // 从系统语言获取 locale（与 LocaleProvider 一致）
+  // 与 LocaleProvider 一致：优先 Cookie（用户选择的语言），再 html lang，再浏览器语言
   function getLocale() {
     try {
+      const m = document.cookie.match(/(^| )NEXT_LOCALE=([^;]+)/);
+      const fromCookie = m ? decodeURIComponent(m[2].trim()) : "";
+      if (fromCookie === "zh" || fromCookie === "ja" || fromCookie === "en") return fromCookie;
       const lang = (document.documentElement.lang || "").toLowerCase();
       if (lang.startsWith("zh")) return "zh";
-      if (lang === "ja" || lang.startsWith("ja")) return "ja";
-      const m = document.cookie.match(/(^| )NEXT_LOCALE=([^;]+)/);
-      const v = m ? m[2] : "";
-      if (v === "zh" || v === "ja" || v === "en") return v;
+      if (lang.startsWith("ja")) return "ja";
+      if (lang.startsWith("en")) return "en";
+      const nav = (navigator.language || "").toLowerCase();
+      if (nav.startsWith("zh")) return "zh";
+      if (nav.startsWith("ja")) return "ja";
     } catch (_) {}
     return "en";
   }

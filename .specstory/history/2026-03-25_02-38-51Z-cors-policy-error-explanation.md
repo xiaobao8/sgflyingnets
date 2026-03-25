@@ -1590,3 +1590,199 @@ _**Agent (composer-2-fast)**_
 <summary>Tool use: **edit_file_v2**</summary>
 
 </details></tool-use>
+
+_**Agent (composer-2-fast)**_
+
+
+下面按你现在的架构来：**Next 在 `127.0.0.1:3000`，Uvicorn 在 `127.0.0.1:8081`**。思路是：**只对外暴露 443**，在 443 上按路径分给 Next 或 Python；**不再**需要单独开一个 `listen 8000 ssl` 给浏览器调 Python（那样还要配 CORS）。
+
+---
+
+## 1. 推荐：只保留一个 `server`（443）
+
+把下面整段当作**替换**你现在的第一个 `server { listen 443 ... }`（在 `http { }` 里）。`server_name` 可改成你的域名，或继续用 `_`。
+
+```nginx
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+}
+
+upstream next_app {
+    server 127.0.0.1:3000;
+}
+
+upstream python_ai {
+    server 127.0.0.1:8081;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name www.sgflyingnets.com;
+
+    ssl_certificate     /etc/nginx/ssl/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/privkey.key;
+
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_ciphers         HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers on;
+
+    client_max_body_size 50m;
+
+    # ---------- Next 独占的 /api/admin/*（必须写在 /api/admin/ 通用规则之前） ----------
+    location ^~ /api/admin/account {
+        proxy_pass http://next_app;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    location ^~ /api/admin/password {
+        proxy_pass http://next_app;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    location ^~ /api/admin/stats {
+        proxy_pass http://next_app;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    location ^~ /api/admin/layout {
+        proxy_pass http://next_app;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    location ^~ /api/admin/material-preview {
+        proxy_pass http://next_app;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    location ^~ /api/admin/material-download {
+        proxy_pass http://next_app;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    location ^~ /api/admin/smtp-test {
+        proxy_pass http://next_app;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # ---------- Python（FastAPI）接口 ----------
+    location ^~ /api/chat {
+        proxy_pass http://python_ai;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 300s;
+    }
+
+    location ^~ /api/knowledge/upload {
+        proxy_pass http://python_ai;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        client_max_body_size 50m;
+    }
+
+    location ^~ /api/materials/upload {
+        proxy_pass http://python_ai;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        client_max_body_size 50m;
+    }
+
+    location ^~ /api/sales-emails {
+        proxy_pass http://python_ai;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location ^~ /api/token-usage {
+        proxy_pass http://python_ai;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location ^~ /api/webhook/ {
+        proxy_pass http://python_ai;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Python：/api/admin/email-config、llm、prompts、material-library 等（其余已在上面指到 Next）
+    location ^~ /api/admin/ {
+        proxy_pass http://python_ai;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        client_max_body_size 50m;
+    }
+
+    # ---------- 默认：整站（含 /admin、/_next、/api/* 其余）→ Next ----------
+    location / {
+        proxy_pass http://next_app;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+    }
+}
+```
+
+`map` 段放在 **`http { }` 里、`server` 外面**（和别的 `server` 平级）。
+
+---
+
+## 2. 第二个 `server { listen 8000 ssl ... }` 怎么办？
+
+- **对外只走官网域名 + 443 时**：可以**删掉** `listen 8000 ssl` 这一段。浏览器只访问 `https://www.sgflyingnets.com/...`，由 443 反代到 `8081`，**不再需要**在 Nginx 上给 Python 套那一长串 **CORS**（同源请求不会触发跨域）。
+- 若你仍有工具/脚本要 **HTTPS 直连某端口**，可以保留 8000，但那是运维选择；与「官网用户」无关。
+
+请确认 **Uvicorn 只监听本机**，例如 `--host 127.0.0.1 --port 8081`，避免绕过 Nginx 直接暴露 Python。
+
+---
+
+## 3. Next 构建环境变量（与 Nginx 配套）
+
+对外统一域名后，把 AI 的 base 指到本站（避免再请求 `20.188.26.9`）：
+
+- `NEXT_PUBLIC_AI_ASSISTANT_API=https://www.sgflyingnets.com`
+
+改完重新构建/部署 Next。
+
+---
+
+## 4. 上线前自检
+
+```bash
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+仓库里 `nginx/flyingnets-multi-service.example.conf` 已把 Python upstream 改成 **`8081`**，与上文一致；若你本机 Python 仍是 `8000`，把 `upstream python_ai` 里的端口改成实际端口即可。

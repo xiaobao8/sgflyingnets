@@ -19,7 +19,7 @@ from app.knowledge.vector_store import KnowledgeVectorStore
 from app.materials.manager import save_material, UPLOAD_DIR, validate_pdf, SCENARIOS
 from app.email_service import send_email, render_template
 from app.admin_routes import router as admin_router
-from app.config_store import get_config, get_config_multi, get_smtp_config, get_chat_prompt, get_email_prompt
+from app.config_store import get_config, get_config_multi, get_smtp_config, get_chat_prompt, get_email_prompt, normalize_chat_locale
 from app.meeting_trigger import check_meeting_agreed, save_chat_message, load_chat_history, send_internal_meeting_email
 from app.materials.library_service import match_material_for_email
 
@@ -101,21 +101,30 @@ async def chat(req: ChatRequest):
     refs = kb_store.search(req.message, top_k=3)
     ref_text = "\n".join(r.get("text", "") for r in refs) if refs else ""
 
-    # 2. 从管理后台读取提示词
-    sys_prompt = await get_chat_prompt()
+    # 2. 从管理后台按界面语言读取对应提示词（与前端 NEXT_LOCALE / document.lang 一致）
+    locale = normalize_chat_locale(req.locale)
+    sys_prompt = await get_chat_prompt(locale)
     # 语言指令：界面语言为默认；若提问者用其他语言，则用该语言回复
-    locale = (req.locale or "zh").lower()
-    if locale in ("en", "ja", "zh"):
-        lang_map = {
-            "zh": "默认使用中文回复；若用户用英文或日文提问，则用相同语言回复。",
-            "en": "Reply in English by default; if the user writes in Chinese or Japanese, reply in that language.",
-            "ja": "デフォルトは日本語で返答；ユーザーが中国語や英語で書いた場合はその言語で返答。",
-        }
-        sys_prompt += f"\n\n{lang_map[locale]}"
+    lang_map = {
+        "zh": "默认使用中文回复；若用户用英文或日文提问，则用相同语言回复。",
+        "en": "Reply in English by default; if the user writes in Chinese or Japanese, reply in that language.",
+        "ja": "デフォルトは日本語で返答；ユーザーが中国語や英語で書いた場合はその言語で返答。",
+    }
+    sys_prompt += f"\n\n{lang_map[locale]}"
     if req.submission_context:
-        sys_prompt += f"\n客户已填表单信息（可精准回应）：{req.submission_context}"
+        ctx_label = {
+            "zh": "客户已填表单信息（可精准回应）：",
+            "en": "Form data already submitted by the customer (use for tailored replies): ",
+            "ja": "お客様が入力済みのフォーム情報（参考に応答）：",
+        }[locale]
+        sys_prompt += f"\n{ctx_label}{req.submission_context}"
     if ref_text:
-        sys_prompt += f"\n参考材料（仅作回复参考）：{ref_text[:2000]}"
+        ref_label = {
+            "zh": "参考材料（仅作回复参考）：",
+            "en": "Reference material (for reply context only): ",
+            "ja": "参考資料（応答の参考のみ）：",
+        }[locale]
+        sys_prompt += f"\n{ref_label}{ref_text[:2000]}"
 
     messages = [
         {"role": "system", "content": sys_prompt},
