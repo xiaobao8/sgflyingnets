@@ -10,6 +10,7 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Flyingnets | AI · Security · Global',
   description: 'Flyingnets — Singapore-headquartered. AI-powered enterprise efficiency and security solutions for enterprises worldwide.',
+  keywords: 'Flyingnets, AI, Security, Cloud, Global, Singapore, Enterprise, Efficiency, Solutions',
 }
 
 export default function RootLayout({
