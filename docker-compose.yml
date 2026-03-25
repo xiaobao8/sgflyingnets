@@ -1,0 +1,18 @@
+services:
+  flyingnets:
+    build: .
+    labels:
+      - dev.orbstack.http-port=8080
+    ports:
+      - "0.0.0.0:8080:8080"
+    volumes:
+      # 使用项目本地 data，恢复 content.json 修改
+      - ./data:/app/data
+      # 挂载整个 public，确保 images 和 uploads 都来自项目（图片不丢失）
+      - ./public:/app/public
+    environment:
+      - JWT_SECRET=${JWT_SECRET:-flyingnets-admin-secret-2026}
+      - DATA_DIR=/app/data
+      - AI_ASSISTANT_API=${AI_ASSISTANT_API:-http://host.docker.internal:8000}
+    restart: unless-stopped
+

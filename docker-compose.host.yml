@@ -1,0 +1,6 @@
+# Host 网络模式备选方案
+# 当 localhost 或 .orb.local 无法访问时使用
+# 启动: docker compose -f docker-compose.yml -f docker-compose.host.yml up -d --build
+services:
+  flyingnets:
+    network_mode: host

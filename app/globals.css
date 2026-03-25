@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 使用系统字体，确保 OrbStack/Docker 构建无需外网（不依赖 Google Fonts） */
+:root {
+  --font-playfair: Georgia, 'Times New Roman', serif;
+  --font-cormorant: Georgia, 'Times New Roman', serif;
+  --font-outfit: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-noto-sc: 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', sans-serif;
+  --font-noto-jp: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+/* 多语言字体：中文-思源黑体，日文-Noto Sans JP，英文-Cormorant Garamond */
+html.lang-zh body,
+html.lang-zh .font-sans {
+  font-family: var(--font-noto-sc), 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+html.lang-ja body,
+html.lang-ja .font-sans {
+  font-family: var(--font-noto-jp), 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+}
+
+html.lang-en body,
+html.lang-en .font-sans {
+  font-family: var(--font-cormorant), Georgia, system-ui, sans-serif;
+}
+
+/* 标题字体：英文用 Playfair，中日文用对应 Noto */
+html.lang-zh .font-serif,
+html.lang-zh .font-display {
+  font-family: var(--font-noto-sc), 'Noto Sans SC', serif;
+}
+
+html.lang-ja .font-serif,
+html.lang-ja .font-display {
+  font-family: var(--font-noto-jp), 'Noto Sans JP', serif;
+}
+
+/* Elegant selection */
+::selection {
+  background: rgba(185, 149, 74, 0.3);
+  color: #1f1d1a;
+}
+
+/* Subtle gradient overlays */
+.gradient-mask-b {
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+
+.gradient-mask-t {
+  mask-image: linear-gradient(to top, black 20%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, black 20%, transparent 100%);
+}
+
+/* ========== Admin 后台：国际品牌风格 ========== */
+.admin-header {
+  letter-spacing: -0.02em;
+}
+.admin-card {
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.admin-card:hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.06), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+}
+.admin-section-title {
+  letter-spacing: 0.02em;
+  font-weight: 600;
+}
+.admin-module-title {
+  letter-spacing: 0.05em;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
