@@ -1655,13 +1655,6 @@ Let me search the codebase for favicon, icon, and related configuration.
 
 _**Agent (default)**_
 
-
-
-
-
-
-_**Agent (default)**_
-
 <tool-use data-tool-type="search" data-tool-name="glob_file_search">
 <details>
 <summary>Tool use: **glob_file_search** • Searched codebase "" • **0** results in **1** directory</summary>
@@ -1785,13 +1778,6 @@ Let me list public/ and check for logos in the project.
 
 _**Agent (default)**_
 
-
-
-
-
-
-_**Agent (default)**_
-
 <tool-use data-tool-type="search" data-tool-name="glob_file_search">
 <details>
 <summary>Tool use: **glob_file_search** • Searched codebase "" • **1** result in **1** directory</summary>
@@ -1850,13 +1836,6 @@ Let me check globals.css or tailwind for brand colors
 
 _**Agent (default)**_
 
-
-
-
-
-
-_**Agent (default)**_
-
 <tool-use data-tool-type="read" data-tool-name="read_file_v2">
 <details><summary>Tool use: **read_file_v2** • Read file: /Users/aiden/Desktop/GuanWang/app/globals.css</summary>
 
@@ -1874,13 +1853,6 @@ _**Agent (default)**_
 
 Let me check tailwind config for gold colors
 </details></think>
-
-_**Agent (default)**_
-
-
-
-
-
 
 _**Agent (default)**_
 
@@ -1968,13 +1940,6 @@ export default function Icon() {
 
 Actually 32x32 might be small for ImageResponse - default is often 32. Let me use brand colors from tailwind gold-500 - I need hex. Read tailwind config.
 </details></think>
-
-_**Agent (default)**_
-
-
-
-
-
 
 _**Agent (default)**_
 
@@ -2116,7 +2081,6 @@ Read lints after create.
 
 _**Agent (default)**_
 
-
 项目里未放置 favicon：`public/` 仅有 `ai-assistant-widget.js`，`app/` 下也没有 `icon`/`favicon` 约定文件，因此浏览器标签页无图标。正在添加符合 Next.js App Router 的 `app/icon.tsx` 与 `app/apple-icon.tsx`（使用站点配色：ink-950 背景 + gold-500 字母 “F”）。
 
 
@@ -2157,13 +2121,6 @@ _**Agent (default)**_
 
 Run tsc and read_lints
 </details></think>
-
-_**Agent (default)**_
-
-
-
-
-
 
 _**Agent (default)**_
 
@@ -2234,7 +2191,6 @@ Optional: mention they can replace with real logo by putting favicon.ico in app/
 
 _**Agent (default)**_
 
-
 ## 原因
 
 站点**从来没有配置站点图标**：
@@ -2274,13 +2230,6 @@ _**Agent (default)**_
 
 The user wants to use logo.png for the favicon/tab icon instead of the dynamic icon.tsx we created. I need to find if logo.png exists in the project somewhere.
 </details></think>
-
-_**Agent (default)**_
-
-
-
-
-
 
 _**Agent (default)**_
 
@@ -2324,13 +2273,6 @@ _**Agent (default)**_
 
 No logo.png in the repo. Let me search for images in data content or common paths
 </details></think>
-
-_**Agent (default)**_
-
-
-
-
-
 
 _**Agent (default)**_
 
@@ -2429,13 +2371,6 @@ Let me list public directory and check for images folder
 
 _**Agent (default)**_
 
-
-
-
-
-
-_**Agent (default)**_
-
 <tool-use data-tool-type="search" data-tool-name="glob_file_search">
 <details>
 <summary>Tool use: **glob_file_search** • Searched codebase "" • **1** result in **1** directory</summary>
@@ -2522,13 +2457,6 @@ Should I add a placeholder logo? User said "用logo.png" - they likely have or w
 
 _**Agent (default)**_
 
-
-
-
-
-
-_**Agent (default)**_
-
 <tool-use data-tool-type="read" data-tool-name="read_file_v2">
 <details><summary>Tool use: **read_file_v2** • Read file: /Users/aiden/Desktop/GuanWang/.gitignore</summary>
 
@@ -2574,7 +2502,6 @@ Implementation.
 </details></think>
 
 _**Agent (default)**_
-
 
 导航已引用 `/images/logo.png`，但仓库里 `public/images/` 不存在。我们将删除会覆盖 favicon 的 `app/icon.tsx` 与 `app/apple-icon.tsx`，并在 `layout` 的 `metadata` 中指向 `/images/logo.png`。
 
@@ -2623,13 +2550,6 @@ The logo.png - public/images doesn't exist in repo. I need to either:
 
 Let me grep for logo in data or content defaults
 </details></think>
-
-_**Agent (default)**_
-
-
-
-
-
 
 _**Agent (default)**_
 
@@ -2701,13 +2621,6 @@ Let me try to fetch the logo from their live site to add to public/images/
 
 _**Agent (default)**_
 
-
-
-
-
-
-_**Agent (default)**_
-
 <tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
 <details><summary>Tool use: **run_terminal_command_v2** • Run command: curl -sI "https://www.sgflyingnets.com/images/logo.png" | head -20</summary>
 
@@ -2732,3 +2645,2556 @@ Cache-Control: public, max-age=86400
 <summary>Tool use: **run_terminal_command_v2**</summary>
 
 </details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+
+Interesting - Content-Type is image/jpeg but URL ends in .png. I'll download it anyway and save as logo.png (browsers often don't care) OR save as logo.jpg and update Navigation + metadata to use jpg.
+
+Actually the user asked for logo.png specifically. I'll download to public/images/logo.png - if it's jpeg data, wrong extension might confuse some tools but browsers usually sniff. Better to run `file` after download.
+
+I'll curl -o public/images/logo.png the url
+</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: mkdir -p /Users/aiden/Desktop/GuanWang/public/images && curl -fsSL "https://www.sgflyingnets.com/images/logo.png" -o /Users/aiden/Desktop/GuanWang/public/images/logo.png && file /Users/aiden/Desktop/GuanWang/public/images/logo.png</summary>
+
+```bash
+mkdir -p /Users/aiden/Desktop/GuanWang/public/images && curl -fsSL "https://www.sgflyingnets.com/images/logo.png" -o /Users/aiden/Desktop/GuanWang/public/images/logo.png && file /Users/aiden/Desktop/GuanWang/public/images/logo.png
+```
+
+```
+/Users/aiden/Desktop/GuanWang/public/images/logo.png: JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, baseline, precision 8, 1024x983, components 3
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+
+The file is JPEG despite .png extension. For clarity I could rename to logo.jpg and update Navigation - but user said logo.png and href is already /images/logo.png. Many sites serve jpg as .png wrongly. I'll keep logo.png path to avoid changing Navigation, and set metadata type. For link rel icon, type="image/png" might be wrong if it's jpeg.
+
+I'll fix by renaming to logo.jpg and updating Navigation to /images/logo.jpg OR keep png filename (works in browsers).
+
+Actually best: save as `logo.jpg` and update all references to use correct extension and mime type. But production URL is logo.png - user might sync from there.
+
+I'll keep as logo.png on disk (jpeg content) - browsers display it. For metadata Next.js:
+```ts
+icons: {
+  icon: [{ url: '/images/logo.png', type: 'image/jpeg' }],
+  ...
+}
+```
+
+Or use generic - Next might infer.
+
+Actually changing extension to .jpg would be cleaner - then update Navigation.tsx to /images/logo.jpg
+
+The deployed site uses logo.png path - so Keeping public/images/logo.jpeg content as logo.png is inconsistent but matches production.
+
+I'll add metadata with correct type image/jpeg for honesty - some strict parsers care.
+
+```ts
+icons: {
+  icon: [
+    { url: '/images/logo.png', type: 'image/jpeg', sizes: 'any' },
+  ],
+  apple: '/images/logo.png',
+},
+```
+
+Actually for apple, same file works.
+
+Let me verify PNG type in Next MetadataIcon - the type field is optional.
+
+I'll use:
+```ts
+icons: {
+  icon: '/images/logo.png',
+  apple: '/images/logo.png',
+},
+```
+
+Works in Chrome despite wrong content-type in file - the HTTP response will serve the file and browser sniffs.
+
+I'll add layout metadata. Also consider using `shortcut` for legacy.
+
+Optional: convert jpeg to real png with sharp/ffmpeg - overkill. User can replace file later.
+
+StrReplace layout metadata.
+</details></think>
+
+_**Agent (default)**_
+
+已从线上站点拉取 Logo 到 `public/images/logo.png`（服务器返回的是 JPEG 数据，扩展名仍为 `.png`，与导航栏一致）。正在向 `layout` 的 `metadata` 添加 `icons` 配置：
+
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: /Users/aiden/Desktop/GuanWang/app/layout.tsx</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+
+The type should be image/jpeg since file is jpeg - let me fix for correctness. Actually declaring image/png when bytes are jpeg could confuse - I'll use image/jpeg or omit type so browser uses Content-Type from response. Next static file serving - Next serves public files with guessed mime from extension, might send image/png incorrectly for jpeg bytes.
+
+Let me check - for Next.js public folder, logo.png might get served as image/png mime type even if content is jpeg - that could be problematic.
+
+I'll convert to proper PNG using sips on macOS or python - user is on darwin.
+
+`sips -s format png input.jpg --out output.png` 
+
+Let me run sips to convert to real PNG
+</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: sips -s format png /Users/aiden/Desktop/GuanWang/public/images/logo.png --out /Users/aiden/Desktop/GuanWang/public/images/logo-convert.png 2>&1 && mv /Users/aiden/Desktop/GuanWang/public/images/logo-convert.png /Users/aiden/Desktop/GuanWang/public/images/logo.png && file /Users/aiden/Desktop/GuanWang/public/images/logo.png</summary>
+
+```bash
+sips -s format png /Users/aiden/Desktop/GuanWang/public/images/logo.png --out /Users/aiden/Desktop/GuanWang/public/images/logo-convert.png 2>&1 && mv /Users/aiden/Desktop/GuanWang/public/images/logo-convert.png /Users/aiden/Desktop/GuanWang/public/images/logo.png && file /Users/aiden/Desktop/GuanWang/public/images/logo.png
+```
+
+```
+/Users/aiden/Desktop/GuanWang/public/images/logo.png
+  /Users/aiden/Desktop/GuanWang/public/images/logo-convert.png
+/Users/aiden/Desktop/GuanWang/public/images/logo.png: PNG image data, 1024 x 983, 8-bit/color RGB, non-interlaced
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+
+Good - now it's real PNG. Remove verbose comment maybe - user rules say no overly verbose comments. I'll shorten comment.
+
+Also generate a smaller favicon - 1024x983 is huge for tab icon but browsers scale. Could add multiple sizes in metadata - optional.
+
+Read lints layout.tsx
+
+For git - binary logo is now in repo - user might want it. Good.
+
+Remove redundant comment or keep one line.
+</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: /Users/aiden/Desktop/GuanWang/app/layout.tsx</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+
+If app/icon.tsx exists on user machine from before - delete failed earlier might mean path issue. Grep for icon.tsx in app
+</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search">
+<details>
+<summary>Tool use: **glob_file_search** • Searched codebase "" • **0** results in **1** directory</summary>
+
+Directory: **/Users/aiden/Desktop/GuanWang/app** (0 files)
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search"><details>
+<summary>Tool use: **glob_file_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="read_lints">
+<details>
+<summary>Tool use: **read_lints**</summary>
+
+
+Parameters:
+
+```json
+{
+  "paths": [
+    "/Users/aiden/Desktop/GuanWang/app/layout.tsx"
+  ]
+}
+```
+Result:
+
+```json
+{
+  "linterErrorsByFile": [
+    {
+      "relativeWorkspacePath": "/Users/aiden/Desktop/GuanWang/app/layout.tsx"
+    }
+  ]
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="read_lints"><details>
+<summary>Tool use: **read_lints**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+
+Good. Summarize for user in Chinese.
+
+Note: binary file in git - user may need to commit public/images/logo.png
+
+If they had docker with only mounted data - the image is now in repo for local dev. Production already had the logo.
+
+Don't edit specstory or unrelated md per rules.
+</details></think>
+
+_**Agent (default)**_
+
+## 原因说明
+
+1. **之前没有可用的 Logo 文件**：`Navigation` 虽然写的是 `/images/logo.png`，但仓库里的 `public/` 只有 `ai-assistant-widget.js`，**没有** `public/images/logo.png`，所以导航和标签图标都拿不到图。  
+2. **没有在 metadata 里声明图标**：即使放了图片，也最好在根布局的 `metadata.icons` 里声明，浏览器才会稳定把它当作 favicon / Apple 图标使用。
+
+## 已做修改
+
+1. **增加站点图标配置**（`app/layout.tsx`）：通过 `metadata.icons` 指向与导航栏相同的 `/images/logo.png`（含 `apple` 用于「添加到主屏幕」）。  
+2. **补全 Logo 资源**：从你线上站点拉取了同名文件，放到 `public/images/logo.png`；原文件实际是 JPEG，已用系统工具转成**真正的 PNG**，避免扩展名与格式不一致。  
+3. 项目里**没有** `app/icon.tsx`（动态图标），因此不会和 `logo.png` 冲突。
+
+本地重新跑站点后若标签仍显示旧图标，可对当前站点做一次**强制刷新**或清缓存再看。
+
+之后若你换了品牌 Logo，只要**替换** `public/images/logo.png`（保持路径不变），导航和标签图标会一起更新。
+
+---
+
+_**User**_
+
+我现在想在用户提交联系表单和合作表单时，同时通过邮件（support@sgflyingnets.com）分别发送给sales@sgflyingnets.com，是合作表单就发给partner@sgflyingnets.com，实现方案，暂时不动代码
+
+---
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+
+The user wants a plan/architecture for sending emails when users submit contact forms and partnership forms:
+- Route to support@sgflyingnets.com (maybe CC or BCC?)
+- Contact form → also send to sales@sgflyingnets.com
+- Partnership form → also send to partner@sgflyingnets.com
+
+They explicitly said "暂时不动代码" (don't touch code for now) - so I need to provide an implementation plan/strategy only, in Chinese.
+
+Let me quickly glance at how forms are submitted today so the plan is grounded in their codebase - that would be more helpful than generic advice. But they said don't change code - I can read to understand current flow.
+</details></think>
+
+_**Agent (default)**_
+
+
+查看当前表单如何提交，以便方案与现有架构对齐。
+
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="semantic_search_full">
+<details>
+<summary>Tool use: **semantic_search_full**</summary>
+
+
+Parameters:
+
+```json
+{
+  "explanation": "",
+  "includePattern": "/Users/aiden/Desktop/GuanWang",
+  "query": "Where is contact form or partnership form submission handled API route?",
+  "topK": 10
+}
+```
+Result:
+
+```json
+{
+  "codeResults": [
+    {
+      "codeBlock": {
+        "detailedLines": [
+          {
+            "isSignature": true,
+            "lineNumber": 22,
+            "text": "export async function POST(req: NextRequest) {"
+          },
+          {
+            "lineNumber": 23,
+            "text": "  try {"
+          },
+          {
+            "lineNumber": 24,
+            "text": "    const body = await req.json()"
+          },
+          {
+            "lineNumber": 25,
+            "text": "    const { company, contact, phone, email, product_interest, region, coop_type, message, locale } = body"
+          },
+          {
+            "lineNumber": 26,
+            "text": "    if (!company || !contact || !phone || !email) {"
+          },
+          {
+            "lineNumber": 27,
+            "text": "      return NextResponse.json({ error: '请填写必填项：公司名称、联系人、电话、邮箱' }, { status: 400 })"
+          },
+          {
+            "lineNumber": 28,
+            "text": "    }"
+          },
+          {
+            "lineNumber": 29
+          },
+          {
+            "lineNumber": 30,
+            "text": "    const submission = {"
+          },
+          {
+            "lineNumber": 31,
+            "text": "      type: 'partnership',"
+          },
+          {
+            "lineNumber": 32,
+            "text": "      company,"
+          },
+          {
+            "lineNumber": 33,
+            "text": "      contact,"
+          },
+          {
+            "lineNumber": 34,
+            "text": "      phone,"
+          },
+          {
+            "lineNumber": 35,
+            "text": "      email,"
+          },
+          {
+            "lineNumber": 36,
+            "text": "      product_interest: product_interest || '',"
+          },
+          {
+            "lineNumber": 37,
+            "text": "      coop_type: coop_type || '',"
+          },
+          {
+            "lineNumber": 38,
+            "text": "      region: region || '',"
+          },
+          {
+            "lineNumber": 39,
+            "text": "      message: message || '',"
+          },
+          {
+            "lineNumber": 40,
+            "text": "      created_at: new Date().toISOString(),"
+          },
+          {
+            "lineNumber": 41,
+            "text": "    }"
+          },
+          {
+            "lineNumber": 42
+          },
+          {
+            "lineNumber": 43,
+            "text": "    const submissions = loadSubmissions()"
+          },
+          {
+            "lineNumber": 44,
+            "text": "    submissions.push(submission)"
+          },
+          {
+            "lineNumber": 45,
+            "text": "    saveSubmissions(submissions)"
+          },
+          {
+            "lineNumber": 46
+          },
+          {
+            "lineNumber": 47,
+            "text": "    // 统一发送到 AI 助手：分析、汇总、由 AI 邮箱统一回复（不再使用各表单独立邮箱）"
+          },
+          {
+            "lineNumber": 48,
+            "text": "    const aiWebhook = process.env.AI_ASSISTANT_WEBHOOK"
+          },
+          {
+            "lineNumber": 49,
+            "text": "    if (aiWebhook) {"
+          },
+          {
+            "lineNumber": 50,
+            "text": "      fetch(aiWebhook, {"
+          },
+          {
+            "lineNumber": 51,
+            "text": "        method: 'POST',"
+          },
+          {
+            "lineNumber": 52,
+            "text": "        headers: { 'Content-Type': 'application/json' },"
+          },
+          {
+            "lineNumber": 53,
+            "text": "        body: JSON.stringify({"
+          },
+          {
+            "lineNumber": 54,
+            "text": "          type: 'partnership',"
+          },
+          {
+            "lineNumber": 55,
+            "text": "          company,"
+          },
+          {
+            "lineNumber": 56,
+            "text": "          contact,"
+          },
+          {
+            "lineNumber": 57,
+            "text": "          phone,"
+          },
+          {
+            "lineNumber": 58,
+            "text": "          email,"
+          },
+          {
+            "lineNumber": 59,
+            "text": "          product_interest: product_interest || '',"
+          },
+          {
+            "lineNumber": 60,
+            "text": "          coop_type: coop_type || '',"
+          },
+          {
+            "lineNumber": 61,
+            "text": "          region: region || '',"
+          },
+          {
+            "lineNumber": 62,
+            "text": "          message: message || '',"
+          },
+          {
+            "lineNumber": 63,
+            "text": "          locale: locale || 'zh',"
+          },
+          {
+            "lineNumber": 64,
+            "text": "        }),"
+          },
+          {
+            "lineNumber": 65,
+            "text": "      }).catch(() =\u003e {})"
+          },
+          {
+            "lineNumber": 66,
+            "text": "    }"
+          },
+          {
+            "lineNumber": 67
+          },
+          {
+            "lineNumber": 68,
+            "text": "    return NextResponse.json({ ok: true })"
+          },
+          {
+            "lineNumber": 69,
+            "text": "  } catch (e) {"
+          },
+          {
+            "lineNumber": 70,
+            "text": "    console.error(e)"
+          },
+          {
+            "lineNumber": 71,
+            "text": "    return NextResponse.json({ error: '提交失败' }, { status: 500 })"
+          },
+          {
+            "lineNumber": 72,
+            "text": "  }"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 73,
+            "text": "}"
+          }
+        ],
+        "range": {
+          "endPosition": {
+            "column": 1,
+            "line": 72
+          },
+          "startPosition": {
+            "column": 1,
+            "line": 19
+          }
+        },
+        "relativeWorkspacePath": "./app/api/submit/partnership/route.ts",
+        "signatures": {}
+      },
+      "score": 0.6141269207000732
+    },
+    {
+      "codeBlock": {
+        "detailedLines": [
+          {
+            "isSignature": true,
+            "lineNumber": 22,
+            "text": "export async function POST(req: NextRequest) {"
+          },
+          {
+            "lineNumber": 23,
+            "text": "  try {"
+          },
+          {
+            "lineNumber": 24,
+            "text": "    const body = await req.json()"
+          },
+          {
+            "lineNumber": 25,
+            "text": "    const { company, contact, phone, email, product_interest, message, locale } = body"
+          },
+          {
+            "lineNumber": 26,
+            "text": "    if (!company || !contact || !phone || !email) {"
+          },
+          {
+            "lineNumber": 27,
+            "text": "      return NextResponse.json({ error: '请填写必填项：公司名称、联系人、电话、邮箱' }, { status: 400 })"
+          },
+          {
+            "lineNumber": 28,
+            "text": "    }"
+          },
+          {
+            "lineNumber": 29
+          },
+          {
+            "lineNumber": 30,
+            "text": "    const submission = {"
+          },
+          {
+            "lineNumber": 31,
+            "text": "      type: 'contact',"
+          },
+          {
+            "lineNumber": 32,
+            "text": "      company,"
+          },
+          {
+            "lineNumber": 33,
+            "text": "      contact,"
+          },
+          {
+            "lineNumber": 34,
+            "text": "      phone,"
+          },
+          {
+            "lineNumber": 35,
+            "text": "      email,"
+          },
+          {
+            "lineNumber": 36,
+            "text": "      product_interest: product_interest || '',"
+          },
+          {
+            "lineNumber": 37,
+            "text": "      message: message || '',"
+          },
+          {
+            "lineNumber": 38,
+            "text": "      created_at: new Date().toISOString(),"
+          },
+          {
+            "lineNumber": 39,
+            "text": "    }"
+          },
+          {
+            "lineNumber": 40
+          },
+          {
+            "lineNumber": 41,
+            "text": "    const submissions = loadSubmissions()"
+          },
+          {
+            "lineNumber": 42,
+            "text": "    submissions.push(submission)"
+          },
+          {
+            "lineNumber": 43,
+            "text": "    saveSubmissions(submissions)"
+          },
+          {
+            "lineNumber": 44
+          },
+          {
+            "lineNumber": 45,
+            "text": "    // 统一发送到 AI 助手：分析、汇总、由 AI 邮箱统一回复（不再使用各表单独立邮箱）"
+          },
+          {
+            "lineNumber": 46,
+            "text": "    const aiWebhook = process.env.AI_ASSISTANT_WEBHOOK"
+          },
+          {
+            "lineNumber": 47,
+            "text": "    if (aiWebhook) {"
+          },
+          {
+            "lineNumber": 48,
+            "text": "      fetch(aiWebhook, {"
+          },
+          {
+            "lineNumber": 49,
+            "text": "        method: 'POST',"
+          },
+          {
+            "lineNumber": 50,
+            "text": "        headers: { 'Content-Type': 'application/json' },"
+          },
+          {
+            "lineNumber": 51,
+            "text": "        body: JSON.stringify({"
+          },
+          {
+            "lineNumber": 52,
+            "text": "          type: 'contact',"
+          },
+          {
+            "lineNumber": 53,
+            "text": "          company,"
+          },
+          {
+            "lineNumber": 54,
+            "text": "          contact,"
+          },
+          {
+            "lineNumber": 55,
+            "text": "          phone,"
+          },
+          {
+            "lineNumber": 56,
+            "text": "          email,"
+          },
+          {
+            "lineNumber": 57,
+            "text": "          product_interest: product_interest || '',"
+          },
+          {
+            "lineNumber": 58,
+            "text": "          message: message || '',"
+          },
+          {
+            "lineNumber": 59,
+            "text": "          coop_type: '',"
+          },
+          {
+            "lineNumber": 60,
+            "text": "          region: '',"
+          },
+          {
+            "lineNumber": 61,
+            "text": "          locale: locale || 'zh',"
+          },
+          {
+            "lineNumber": 62,
+            "text": "        }),"
+          },
+          {
+            "lineNumber": 63,
+            "text": "      }).catch(() =\u003e {})"
+          },
+          {
+            "lineNumber": 64,
+            "text": "    }"
+          },
+          {
+            "lineNumber": 65
+          },
+          {
+            "lineNumber": 66,
+            "text": "    return NextResponse.json({ ok: true })"
+          },
+          {
+            "lineNumber": 67,
+            "text": "  } catch (e) {"
+          },
+          {
+            "lineNumber": 68,
+            "text": "    console.error(e)"
+          },
+          {
+            "lineNumber": 69,
+            "text": "    return NextResponse.json({ error: '提交失败' }, { status: 500 })"
+          },
+          {
+            "lineNumber": 70,
+            "text": "  }"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 71,
+            "text": "}"
+          }
+        ],
+        "range": {
+          "endPosition": {
+            "column": 1,
+            "line": 70
+          },
+          "startPosition": {
+            "column": 1,
+            "line": 19
+          }
+        },
+        "relativeWorkspacePath": "./app/api/submit/contact/route.ts",
+        "signatures": {}
+      },
+      "score": 0.5686062574386597
+    },
+    {
+      "codeBlock": {
+        "detailedLines": [
+          {
+            "isSignature": true,
+            "lineNumber": 10,
+            "text": "export function PartnershipForm({ products }: { products: Product[] }) {"
+          },
+          {
+            "lineNumber": 11,
+            "text": "  const t = useTranslations()"
+          },
+          {
+            "lineNumber": 12,
+            "text": "  const { locale } = useLocale()"
+          },
+          {
+            "lineNumber": 13,
+            "text": "  const [form, setForm] = useState({"
+          },
+          {
+            "lineNumber": 14,
+            "text": "    company: '',"
+          },
+          {
+            "lineNumber": 15,
+            "text": "    contact: '',"
+          },
+          {
+            "lineNumber": 16,
+            "text": "    phone: '',"
+          },
+          {
+            "lineNumber": 17,
+            "text": "    email: '',"
+          },
+          {
+            "lineNumber": 18,
+            "text": "    product_interest: '',"
+          },
+          {
+            "lineNumber": 19,
+            "text": "    region: '',"
+          },
+          {
+            "lineNumber": 20,
+            "text": "    coop_type: '',"
+          },
+          {
+            "lineNumber": 21,
+            "text": "    message: '',"
+          },
+          {
+            "lineNumber": 22,
+            "text": "  })"
+          },
+          {
+            "lineNumber": 23,
+            "text": "  const [submitting, setSubmitting] = useState(false)"
+          },
+          {
+            "lineNumber": 24,
+            "text": "  const [submitted, setSubmitted] = useState(false)"
+          },
+          {
+            "lineNumber": 25,
+            "text": "  const [error, setError] = useState('')"
+          },
+          {
+            "lineNumber": 26
+          },
+          {
+            "lineNumber": 27,
+            "text": "  const handleSubmit = async (e: React.FormEvent) =\u003e {"
+          },
+          {
+            "lineNumber": 28,
+            "text": "    e.preventDefault()"
+          },
+          {
+            "lineNumber": 29,
+            "text": "    setError('')"
+          },
+          {
+            "lineNumber": 30,
+            "text": "    setSubmitting(true)"
+          },
+          {
+            "lineNumber": 31,
+            "text": "    try {"
+          },
+          {
+            "lineNumber": 32,
+            "text": "      const res = await fetch('/api/submit/partnership', {"
+          },
+          {
+            "lineNumber": 33,
+            "text": "        method: 'POST',"
+          },
+          {
+            "lineNumber": 34,
+            "text": "        headers: { 'Content-Type': 'application/json' },"
+          },
+          {
+            "lineNumber": 35,
+            "text": "        body: JSON.stringify({ ...form, locale }),"
+          },
+          {
+            "lineNumber": 36,
+            "text": "      })"
+          },
+          {
+            "lineNumber": 37,
+            "text": "      const data = await res.json()"
+          },
+          {
+            "lineNumber": 38,
+            "text": "      if (!res.ok) throw new Error(data.error || t.common.submitFailed)"
+          },
+          {
+            "lineNumber": 39,
+            "text": "      setSubmitted(true)"
+          },
+          {
+            "lineNumber": 40,
+            "text": "      setForm({ company: '', contact: '', phone: '', email: '', product_interest: '', region: '', coop_type: '', message: '' })"
+          },
+          {
+            "lineNumber": 41,
+            "text": "    } catch (err) {"
+          },
+          {
+            "lineNumber": 42,
+            "text": "      setError(err instanceof Error ? err.message : t.common.submitFailedRetry)"
+          },
+          {
+            "lineNumber": 43,
+            "text": "    } finally {"
+          },
+          {
+            "lineNumber": 44,
+            "text": "      setSubmitting(false)"
+          },
+          {
+            "lineNumber": 45,
+            "text": "    }"
+          },
+          {
+            "lineNumber": 46,
+            "text": "  }"
+          },
+          {
+            "lineNumber": 47
+          },
+          {
+            "lineNumber": 48,
+            "text": "  return ("
+          },
+          {
+            "lineNumber": 49,
+            "text": "    \u003cdiv className=\"max-w-2xl mx-auto\"\u003e"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 161,
+            "text": "}"
+          }
+        ],
+        "range": {
+          "endPosition": {
+            "column": 1,
+            "line": 160
+          },
+          "startPosition": {
+            "column": 64,
+            "line": 7
+          }
+        },
+        "relativeWorkspacePath": "./components/PartnershipForm.tsx",
+        "signatures": {}
+      },
+      "score": 0.4854181110858917
+    },
+    {
+      "codeBlock": {
+        "detailedLines": [
+          {
+            "lineNumber": 269,
+            "text": "@app.post(\"/api/webhook/form\")"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 270,
+            "text": "async def form_webhook(payload: FormWebhookPayload):"
+          },
+          {
+            "lineNumber": 271,
+            "text": "    \"\"\"HP 表单提交后调用：存储 → AI 分析汇总 → 由 AI 邮箱统一回复客户\"\"\""
+          },
+          {
+            "lineNumber": 272,
+            "text": "    async with AsyncSessionLocal() as db:"
+          },
+          {
+            "lineNumber": 273,
+            "text": "        sub = FormSubmission("
+          },
+          {
+            "lineNumber": 274,
+            "text": "            type=payload.type,"
+          },
+          {
+            "lineNumber": 275,
+            "text": "            company=payload.company,"
+          },
+          {
+            "lineNumber": 276,
+            "text": "            contact=payload.contact,"
+          },
+          {
+            "lineNumber": 277,
+            "text": "            phone=payload.phone,"
+          },
+          {
+            "lineNumber": 278,
+            "text": "            email=payload.email,"
+          },
+          {
+            "lineNumber": 279,
+            "text": "            product_interest=payload.product_interest,"
+          },
+          {
+            "lineNumber": 280,
+            "text": "            coop_type=payload.coop_type,"
+          },
+          {
+            "lineNumber": 281,
+            "text": "            region=payload.region,"
+          },
+          {
+            "lineNumber": 282,
+            "text": "            message=payload.message,"
+          },
+          {
+            "lineNumber": 283,
+            "text": "            source=\"hp\","
+          },
+          {
+            "lineNumber": 284,
+            "text": "        )"
+          },
+          {
+            "lineNumber": 285,
+            "text": "        db.add(sub)"
+          },
+          {
+            "lineNumber": 286,
+            "text": "        await db.commit()"
+          },
+          {
+            "lineNumber": 287,
+            "text": "        sub_id = sub.id"
+          },
+          {
+            "lineNumber": 288
+          },
+          {
+            "lineNumber": 289,
+            "text": "    # AI 分析并生成个性化回复，由 AI 邮箱统一发送"
+          },
+          {
+            "lineNumber": 290,
+            "text": "    try:"
+          },
+          {
+            "lineNumber": 291,
+            "text": "        prompt = await get_email_prompt(payload.type)"
+          },
+          {
+            "lineNumber": 292,
+            "text": "        locale = (payload.locale or \"zh\").lower()"
+          },
+          {
+            "lineNumber": 293,
+            "text": "        if locale in (\"en\", \"ja\", \"zh\"):"
+          },
+          {
+            "lineNumber": 294,
+            "text": "            lang_instruction = {"
+          },
+          {
+            "lineNumber": 295,
+            "text": "                \"zh\": \"请使用中文撰写邮件。\","
+          },
+          {
+            "lineNumber": 296,
+            "text": "                \"en\": \"Please write the email in English.\","
+          },
+          {
+            "lineNumber": 297,
+            "text": "                \"ja\": \"メールは日本語で作成してください。\","
+          },
+          {
+            "lineNumber": 298,
+            "text": "            }[locale]"
+          },
+          {
+            "lineNumber": 299,
+            "text": "            prompt += f\"\\n\\n{lang_instruction}\""
+          },
+          {
+            "lineNumber": 300,
+            "text": "        ctx = f\"公司：{payload.company}，联系人：{payload.contact}，电话：{payload.phone}，邮箱：{payload.email}，感兴趣：{payload.product_interest}，{payload.coop_type or ''}，{payload.region or ''}，留言：{payload.message}\""
+          },
+          {
+            "lineNumber": 301,
+            "text": "        messages = ["
+          },
+          {
+            "lineNumber": 302,
+            "text": "            {\"role\": \"system\", \"content\": prompt},"
+          },
+          {
+            "lineNumber": 303,
+            "text": "            {\"role\": \"user\", \"content\": f\"请生成一封回复邮件正文（HTML），收件人：{payload.contact}，公司：{payload.company}。表单内容：{ctx}\"},"
+          },
+          {
+            "lineNumber": 304,
+            "text": "        ]"
+          },
+          {
+            "lineNumber": 305,
+            "text": "        reply_html = await get_llm_response(messages)"
+          },
+          {
+            "lineNumber": 306,
+            "text": "        smtp_cfg = await get_smtp_config()"
+          },
+          {
+            "lineNumber": 307,
+            "text": "        if smtp_cfg.get(\"host\"):"
+          },
+          {
+            "lineNumber": 308,
+            "text": "            subject ="
+          }
+        ],
+        "range": {
+          "endPosition": {
+            "line": 320
+          },
+          "startPosition": {
+            "column": 61,
+            "line": 265
+          }
+        },
+        "relativeWorkspacePath": "./ai-assistant/main.py",
+        "signatures": {}
+      },
+      "score": 0.4813493490219116
+    },
+    {
+      "codeBlock": {
+        "detailedLines": [
+          {
+            "isSignature": true,
+            "lineNumber": 10,
+            "text": "export function ContactForm({ products }: { products: Product[] }) {"
+          },
+          {
+            "lineNumber": 11,
+            "text": "  const t = useTranslations()"
+          },
+          {
+            "lineNumber": 12,
+            "text": "  const { locale } = useLocale()"
+          },
+          {
+            "lineNumber": 13,
+            "text": "  const [form, setForm] = useState({"
+          },
+          {
+            "lineNumber": 14,
+            "text": "    company: '',"
+          },
+          {
+            "lineNumber": 15,
+            "text": "    contact: '',"
+          },
+          {
+            "lineNumber": 16,
+            "text": "    phone: '',"
+          },
+          {
+            "lineNumber": 17,
+            "text": "    email: '',"
+          },
+          {
+            "lineNumber": 18,
+            "text": "    product_interest: '',"
+          },
+          {
+            "lineNumber": 19,
+            "text": "    message: '',"
+          },
+          {
+            "lineNumber": 20,
+            "text": "  })"
+          },
+          {
+            "lineNumber": 21,
+            "text": "  const [submitting, setSubmitting] = useState(false)"
+          },
+          {
+            "lineNumber": 22,
+            "text": "  const [submitted, setSubmitted] = useState(false)"
+          },
+          {
+            "lineNumber": 23,
+            "text": "  const [error, setError] = useState('')"
+          },
+          {
+            "lineNumber": 24
+          },
+          {
+            "lineNumber": 25,
+            "text": "  const handleSubmit = async (e: React.FormEvent) =\u003e {"
+          },
+          {
+            "lineNumber": 26,
+            "text": "    e.preventDefault()"
+          },
+          {
+            "lineNumber": 27,
+            "text": "    setError('')"
+          },
+          {
+            "lineNumber": 28,
+            "text": "    setSubmitting(true)"
+          },
+          {
+            "lineNumber": 29,
+            "text": "    try {"
+          },
+          {
+            "lineNumber": 30,
+            "text": "      const res = await fetch('/api/submit/contact', {"
+          },
+          {
+            "lineNumber": 31,
+            "text": "        method: 'POST',"
+          },
+          {
+            "lineNumber": 32,
+            "text": "        headers: { 'Content-Type': 'application/json' },"
+          },
+          {
+            "lineNumber": 33,
+            "text": "        body: JSON.stringify({ ...form, locale }),"
+          },
+          {
+            "lineNumber": 34,
+            "text": "      })"
+          },
+          {
+            "lineNumber": 35,
+            "text": "      const data = await res.json()"
+          },
+          {
+            "lineNumber": 36,
+            "text": "      if (!res.ok) throw new Error(data.error || t.common.submitFailed)"
+          },
+          {
+            "lineNumber": 37,
+            "text": "      setSubmitted(true)"
+          },
+          {
+            "lineNumber": 38,
+            "text": "      setForm({ company: '', contact: '', phone: '', email: '', product_interest: '', message: '' })"
+          },
+          {
+            "lineNumber": 39,
+            "text": "    } catch (err) {"
+          },
+          {
+            "lineNumber": 40,
+            "text": "      setError(err instanceof Error ? err.message : t.common.submitFailedRetry)"
+          },
+          {
+            "lineNumber": 41,
+            "text": "    } finally {"
+          },
+          {
+            "lineNumber": 42,
+            "text": "      setSubmitting(false)"
+          },
+          {
+            "lineNumber": 43,
+            "text": "    }"
+          },
+          {
+            "lineNumber": 44,
+            "text": "  }"
+          },
+          {
+            "lineNumber": 45
+          },
+          {
+            "lineNumber": 46,
+            "text": "  return ("
+          },
+          {
+            "lineNumber": 47,
+            "text": "    \u003cdiv className=\"bg-white border border-ink-200 rounded-2xl p-10 shadow-sm"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 139,
+            "text": "}"
+          }
+        ],
+        "range": {
+          "endPosition": {
+            "column": 1,
+            "line": 138
+          },
+          "startPosition": {
+            "column": 63,
+            "line": 7
+          }
+        },
+        "relativeWorkspacePath": "./components/ContactForm.tsx",
+        "signatures": {}
+      },
+      "score": 0.44016313552856445
+    },
+    {
+      "codeBlock": {
+        "detailedLines": [
+          {
+            "lineNumber": 1,
+            "text": "import { NextRequest, NextResponse } from 'next/server'"
+          },
+          {
+            "lineNumber": 2,
+            "text": "import fs from 'fs'"
+          },
+          {
+            "lineNumber": 3,
+            "text": "import path from 'path'"
+          },
+          {
+            "lineNumber": 4
+          },
+          {
+            "lineNumber": 5,
+            "text": "const DATA_DIR = process.env.DATA_DIR || path.join(process.cwd(), 'data')"
+          },
+          {
+            "lineNumber": 6,
+            "text": "const SUBMISSIONS_FILE = path.join(DATA_DIR, 'submissions.json')"
+          },
+          {
+            "lineNumber": 7
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 8,
+            "text": "function loadSubmissions() {"
+          },
+          {
+            "lineNumber": 9,
+            "text": "  if (!fs.existsSync(SUBMISSIONS_FILE)) return []"
+          },
+          {
+            "lineNumber": 10,
+            "text": "  try {"
+          },
+          {
+            "lineNumber": 11,
+            "text": "    return JSON.parse(fs.readFileSync(SUBMISSIONS_FILE, 'utf-8'))"
+          },
+          {
+            "lineNumber": 12,
+            "text": "  } catch {"
+          },
+          {
+            "lineNumber": 13,
+            "text": "    return []"
+          },
+          {
+            "lineNumber": 14,
+            "text": "  }"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 15,
+            "text": "}"
+          },
+          {
+            "lineNumber": 16
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 17,
+            "text": "function saveSubmissions(data: unknown[]) {"
+          },
+          {
+            "lineNumber": 18,
+            "text": "  fs.mkdirSync(DATA_DIR, { recursive: true })"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 20,
+            "text": "}"
+          }
+        ],
+        "range": {
+          "endPosition": {
+            "column": 1,
+            "line": 19
+          },
+          "startPosition": {}
+        },
+        "relativeWorkspacePath": "./app/api/submit/contact/route.ts",
+        "signatures": {}
+      },
+      "score": 0.4246695935726166
+    },
+    {
+      "codeBlock": {
+        "detailedLines": [
+          {
+            "lineNumber": 1,
+            "text": "import { NextRequest, NextResponse } from 'next/server'"
+          },
+          {
+            "lineNumber": 2,
+            "text": "import fs from 'fs'"
+          },
+          {
+            "lineNumber": 3,
+            "text": "import path from 'path'"
+          },
+          {
+            "lineNumber": 4
+          },
+          {
+            "lineNumber": 5,
+            "text": "const DATA_DIR = process.env.DATA_DIR || path.join(process.cwd(), 'data')"
+          },
+          {
+            "lineNumber": 6,
+            "text": "const SUBMISSIONS_FILE = path.join(DATA_DIR, 'submissions.json')"
+          },
+          {
+            "lineNumber": 7
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 8,
+            "text": "function loadSubmissions() {"
+          },
+          {
+            "lineNumber": 9,
+            "text": "  if (!fs.existsSync(SUBMISSIONS_FILE)) return []"
+          },
+          {
+            "lineNumber": 10,
+            "text": "  try {"
+          },
+          {
+            "lineNumber": 11,
+            "text": "    return JSON.parse(fs.readFileSync(SUBMISSIONS_FILE, 'utf-8'))"
+          },
+          {
+            "lineNumber": 12,
+            "text": "  } catch {"
+          },
+          {
+            "lineNumber": 13,
+            "text": "    return []"
+          },
+          {
+            "lineNumber": 14,
+            "text": "  }"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 15,
+            "text": "}"
+          },
+          {
+            "lineNumber": 16
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 17,
+            "text": "function saveSubmissions(data: unknown[]) {"
+          },
+          {
+            "lineNumber": 18,
+            "text": "  fs.mkdirSync(DATA_DIR, { recursive: true })"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 20,
+            "text": "}"
+          }
+        ],
+        "range": {
+          "endPosition": {
+            "column": 1,
+            "line": 19
+          },
+          "startPosition": {}
+        },
+        "relativeWorkspacePath": "./app/api/submit/partnership/route.ts",
+        "signatures": {}
+      },
+      "score": 0.41161999106407166
+    },
+    {
+      "codeBlock": {
+        "detailedLines": [
+          {
+            "lineNumber": 1,
+            "text": "\"\"\""
+          },
+          {
+            "lineNumber": 2,
+            "text": "数据库模型与连接"
+          },
+          {
+            "lineNumber": 3,
+            "text": "存储：表单数据、AI 配置、邮件记录、内部销售邮箱、Token 消耗"
+          },
+          {
+            "lineNumber": 4,
+            "text": "\"\"\""
+          },
+          {
+            "lineNumber": 5,
+            "text": "from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker"
+          },
+          {
+            "lineNumber": 6,
+            "text": "from sqlalchemy.orm import declarative_base"
+          },
+          {
+            "lineNumber": 7,
+            "text": "from sqlalchemy import Column, Integer, String, Text, DateTime, Float, Boolean, ForeignKey, JSON"
+          },
+          {
+            "lineNumber": 8,
+            "text": "from datetime import datetime"
+          },
+          {
+            "lineNumber": 9,
+            "text": "import os"
+          },
+          {
+            "lineNumber": 10
+          },
+          {
+            "lineNumber": 11,
+            "text": "import sys"
+          },
+          {
+            "lineNumber": 12,
+            "text": "from pathlib import Path"
+          },
+          {
+            "lineNumber": 13,
+            "text": "sys.path.insert(0, str(Path(__file__).resolve().parent.parent))"
+          },
+          {
+            "lineNumber": 14,
+            "text": "from config import settings"
+          },
+          {
+            "lineNumber": 15
+          },
+          {
+            "lineNumber": 16,
+            "text": "# 确保 data 目录存在"
+          },
+          {
+            "lineNumber": 17,
+            "text": "os.makedirs(\"data\", exist_ok=True)"
+          },
+          {
+            "lineNumber": 18
+          },
+          {
+            "lineNumber": 19,
+            "text": "engine = create_async_engine("
+          },
+          {
+            "lineNumber": 20,
+            "text": "    settings.DATABASE_URL,"
+          },
+          {
+            "lineNumber": 21,
+            "text": "    echo=False,"
+          },
+          {
+            "lineNumber": 22,
+            "text": ")"
+          },
+          {
+            "lineNumber": 23
+          },
+          {
+            "lineNumber": 24,
+            "text": "AsyncSessionLocal = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)"
+          },
+          {
+            "lineNumber": 25,
+            "text": "Base = declarative_base()"
+          },
+          {
+            "lineNumber": 26
+          },
+          {
+            "lineNumber": 27
+          },
+          {
+            "lineNumber": 28,
+            "text": "# ========== 表单数据（与现有 HP 表单联动） =========="
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 29,
+            "text": "class FormSubmission(Base):"
+          },
+          {
+            "lineNumber": 30,
+            "text": "    \"\"\"表单提交记录，与 HP submissions.json 同步\"\"\""
+          },
+          {
+            "lineNumber": 31,
+            "text": "    __tablename__ = \"form_submissions\""
+          },
+          {
+            "lineNumber": 32,
+            "text": "    id = Column(Integer, primary_key=True, autoincrement=True)"
+          },
+          {
+            "lineNumber": 33,
+            "text": "    type = Column(String(32))  # contact / partnership"
+          },
+          {
+            "lineNumber": 34,
+            "text": "    company = Column(String(256))"
+          },
+          {
+            "lineNumber": 35,
+            "text": "    contact = Column(String(128))"
+          },
+          {
+            "lineNumber": 36,
+            "text": "    phone = Column(String(64))"
+          },
+          {
+            "lineNumber": 37,
+            "text": "    email = Column(String(256))"
+          },
+          {
+            "lineNumber": 38,
+            "text": "    product_interest = Column(String(512), default=\"\")"
+          },
+          {
+            "lineNumber": 39,
+            "text": "    coop_type = Column(String(128), default=\"\")"
+          },
+          {
+            "lineNumber": 40,
+            "text": "    region = Column(String(128), default=\"\")"
+          },
+          {
+            "lineNumber": 41,
+            "text": "    message = Column(Text, default=\"\")"
+          },
+          {
+            "lineNumber": 42,
+            "text": "    created_at = Column(DateTime, default=datetime.utcnow)"
+          },
+          {
+            "lineNumber": 43,
+            "text": "    # 同步来源"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 44,
+            "text": "    source = Column(String(32), default=\"hp\")  # hp / manual"
+          },
+          {
+            "lineNumber": 45
+          },
+          {
+            "lineNumber": 46
+          },
+          {
+            "lineNumber": 47,
+            "text": "# ========== 内部销售邮箱配置 =========="
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 48,
+            "text": "class SalesEmail(Base):"
+          },
+          {
+            "lineNumber": 49,
+            "text": "    \"\"\"内部真人销售邮箱，客户同意会议后发送到此\"\"\""
+          }
+        ],
+        "range": {
+          "endPosition": {
+            "line": 56
+          },
+          "startPosition": {}
+        },
+        "relativeWorkspacePath": "./ai-assistant/app/database.py",
+        "signatures": {}
+      },
+      "score": 0.38834670186042786
+    },
+    {
+      "codeBlock": {
+        "detailedLines": [
+          {
+            "isSignature": true,
+            "lineNumber": 24,
+            "text": "export async function POST(req: NextRequest) {"
+          },
+          {
+            "lineNumber": 25,
+            "text": "  const auth = await getAuthFromCookies()"
+          },
+          {
+            "lineNumber": 26,
+            "text": "  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })"
+          },
+          {
+            "lineNumber": 27,
+            "text": "  const path = req.nextUrl.searchParams.get('path') || '/'"
+          },
+          {
+            "lineNumber": 28,
+            "text": "  const url = &#96;${AI_BASE}${path}&#96;"
+          },
+          {
+            "lineNumber": 29,
+            "text": "  try {"
+          },
+          {
+            "lineNumber": 30,
+            "text": "    const contentType = req.headers.get('content-type') || ''"
+          },
+          {
+            "lineNumber": 31,
+            "text": "    const isForm = contentType.includes('multipart/form-data')"
+          },
+          {
+            "lineNumber": 32,
+            "text": "    const opts: RequestInit = { method: 'POST' }"
+          },
+          {
+            "lineNumber": 33,
+            "text": "    if (isForm) {"
+          },
+          {
+            "lineNumber": 34,
+            "text": "      opts.body = await req.formData()"
+          },
+          {
+            "lineNumber": 35,
+            "text": "      opts.headers = {}"
+          },
+          {
+            "lineNumber": 36,
+            "text": "    } else {"
+          },
+          {
+            "lineNumber": 37,
+            "text": "      opts.headers = { 'Content-Type': 'application/json' }"
+          },
+          {
+            "lineNumber": 38,
+            "text": "      opts.body = await req.text()"
+          },
+          {
+            "lineNumber": 39,
+            "text": "    }"
+          },
+          {
+            "lineNumber": 40,
+            "text": "    const res = await fetch(url, opts)"
+          },
+          {
+            "lineNumber": 41,
+            "text": "    const data = await res.json().catch(() =\u003e ({}))"
+          },
+          {
+            "lineNumber": 42,
+            "text": "    return NextResponse.json(data, { status: res.status })"
+          },
+          {
+            "lineNumber": 43,
+            "text": "  } catch (e) {"
+          },
+          {
+            "lineNumber": 44,
+            "text": "    return NextResponse.json({ error: 'AI 助手服务不可用' }, { status: 502 })"
+          },
+          {
+            "lineNumber": 45,
+            "text": "  }"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 46,
+            "text": "}"
+          },
+          {
+            "lineNumber": 47
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 48,
+            "text": "export async function PUT(req: NextRequest) {"
+          },
+          {
+            "lineNumber": 49,
+            "text": "  const auth = await getAuthFromCookies()"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 61,
+            "text": "}"
+          }
+        ],
+        "range": {
+          "endPosition": {
+            "column": 1,
+            "line": 60
+          },
+          "startPosition": {
+            "column": 1,
+            "line": 21
+          }
+        },
+        "relativeWorkspacePath": "./app/api/ai/proxy/route.ts",
+        "signatures": {}
+      },
+      "score": 0.38364389538764954
+    },
+    {
+      "codeBlock": {
+        "detailedLines": [
+          {
+            "isSignature": true,
+            "lineNumber": 19,
+            "text": "export async function GET() {"
+          },
+          {
+            "lineNumber": 20,
+            "text": "  const auth = await getAuthFromCookies()"
+          },
+          {
+            "lineNumber": 21,
+            "text": "  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })"
+          },
+          {
+            "lineNumber": 22
+          },
+          {
+            "lineNumber": 23,
+            "text": "  try {"
+          },
+          {
+            "lineNumber": 24,
+            "text": "    const list = loadSubmissions()"
+          },
+          {
+            "lineNumber": 25,
+            "text": "    const today = new Date().toISOString().slice(0, 10)"
+          },
+          {
+            "lineNumber": 26,
+            "text": "    const thisWeek = new Date()"
+          },
+          {
+            "lineNumber": 27,
+            "text": "    thisWeek.setDate(thisWeek.getDate() - 7)"
+          },
+          {
+            "lineNumber": 28,
+            "text": "    const weekAgo = thisWeek.toISOString()"
+          },
+          {
+            "lineNumber": 29
+          },
+          {
+            "lineNumber": 30,
+            "text": "    const total = list.length"
+          },
+          {
+            "lineNumber": 31,
+            "text": "    const contactCount = list.filter((s: { type?: string }) =\u003e s.type === 'contact').length"
+          },
+          {
+            "lineNumber": 32,
+            "text": "    const partnershipCount = list.filter((s: { type?: string }) =\u003e s.type === 'partnership').length"
+          },
+          {
+            "lineNumber": 33,
+            "text": "    const todayCount = list.filter((s: { created_at?: string }) =\u003e (s.created_at || '').startsWith(today)).length"
+          },
+          {
+            "lineNumber": 34,
+            "text": "    const weekCount = list.filter((s: { created_at?: string }) =\u003e (s.created_at || '') \u003e= weekAgo).length"
+          },
+          {
+            "lineNumber": 35
+          },
+          {
+            "lineNumber": 36,
+            "text": "    const store = readStore()"
+          },
+          {
+            "lineNumber": 37,
+            "text": "    const siteSmtp = !!(process.env.SMTP_HOST || store.site_config?.smtp_host) \u0026\u0026"
+          },
+          {
+            "lineNumber": 38,
+            "text": "      !!(process.env.SMTP_USER || store.site_config?.smtp_user) \u0026\u0026"
+          },
+          {
+            "lineNumber": 39,
+            "text": "      !!(process.env.SMTP_PASS || store.site_config?.smtp_pass)"
+          },
+          {
+            "lineNumber": 40
+          },
+          {
+            "lineNumber": 41,
+            "text": "    // AI 发件邮箱（表单回复、会议触发均用此配置）"
+          },
+          {
+            "lineNumber": 42,
+            "text": "    let aiSmtpConfigured = siteSmtp"
+          },
+          {
+            "lineNumber": 43,
+            "text": "    try {"
+          },
+          {
+            "lineNumber": 44,
+            "text": "      const aiBase = process.env.AI_ASSISTANT_API || 'http://localhost:8000'"
+          },
+          {
+            "lineNumber": 45,
+            "text": "      const aiRes = await fetch(&#96;${aiBase}/api/admin/email-config&#96;, { cache: 'no-store' })"
+          },
+          {
+            "lineNumber": 46,
+            "text": "      if (aiRes.ok) {"
+          },
+          {
+            "lineNumber": 47,
+            "text": "        const d = await aiRes.json()"
+          },
+          {
+            "lineNumber": 48,
+            "text": "        aiSmtpConfigured = !!(d?.smtp_host \u0026\u0026 d?.smtp_user)"
+          },
+          {
+            "lineNumber": 49,
+            "text": "      }"
+          },
+          {
+            "lineNumber": 50,
+            "text": "    } catch {"
+          },
+          {
+            "lineNumber": 51,
+            "text": "      // AI 服务不可用时沿用站点配置"
+          },
+          {
+            "lineNumber": 52,
+            "text": "    }"
+          },
+          {
+            "lineNumber": 53
+          },
+          {
+            "lineNumber": 54,
+            "text": "    return NextResponse.json({"
+          },
+          {
+            "lineNumber": 55,
+            "text": "      submissions: { total, contact: contactCount, partnership: partnershipCount, today: todayCount, week: weekCount },"
+          },
+          {
+            "lineNumber": 56,
+            "text": "      smtpConfigured: aiSmtpConfigured,"
+          },
+          {
+            "lineNumber": 57,
+            "text": "      contactEmail: store.site_config?.contact_email || '',"
+          },
+          {
+            "lineNumber": 58,
+            "text": "      partnershipEmail: store.site_config?.partnership_email || '',"
+          },
+          {
+            "lineNumber": 59,
+            "text": "    })"
+          },
+          {
+            "lineNumber": 60,
+            "text": "  } catch (e) {"
+          },
+          {
+            "lineNumber": 61,
+            "text": "    console.error(e)"
+          },
+          {
+            "lineNumber": 62,
+            "text": "    return NextResponse.json({ error: 'Failed' }, { status: 500 })"
+          },
+          {
+            "lineNumber": 63,
+            "text": "  }"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 64,
+            "text": "}"
+          }
+        ],
+        "range": {
+          "endPosition": {
+            "column": 1,
+            "line": 63
+          },
+          "startPosition": {
+            "column": 1,
+            "line": 16
+          }
+        },
+        "relativeWorkspacePath": "./app/api/admin/stats/route.ts",
+        "signatures": {}
+      },
+      "score": 0.36805564165115356
+    },
+    {
+      "codeBlock": {
+        "detailedLines": [
+          {
+            "lineNumber": 269,
+            "text": "@app.post(\"/api/webhook/form\")"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 270,
+            "text": "async def form_webhook(payload: FormWebhookPayload):"
+          },
+          {
+            "lineNumber": 306
+          },
+          {
+            "lineNumber": 307,
+            "text": "        if smtp_cfg.get(\"host\"):"
+          },
+          {
+            "lineNumber": 308,
+            "text": "            subject = f\"[Flyingnets] 感谢您的咨询 - {payload.company}\""
+          },
+          {
+            "lineNumber": 309,
+            "text": "            attachments = []"
+          },
+          {
+            "lineNumber": 310,
+            "text": "            mat_path = await match_material_for_email(payload.type)"
+          },
+          {
+            "lineNumber": 311,
+            "text": "            if mat_path:"
+          },
+          {
+            "lineNumber": 312,
+            "text": "                attachments.append(mat_path)"
+          },
+          {
+            "lineNumber": 313,
+            "text": "            await send_email(payload.email, subject, reply_html, config=smtp_cfg, attachments=attachments or None)"
+          },
+          {
+            "lineNumber": 314,
+            "text": "            async with AsyncSessionLocal() as db:"
+          },
+          {
+            "lineNumber": 315,
+            "text": "                db.add(EmailRecord(to_email=payload.email, subject=subject, type=f\"{payload.type}_reply\", submission_id=sub_id, status=\"sent\"))"
+          },
+          {
+            "lineNumber": 316,
+            "text": "                await db.commit()"
+          },
+          {
+            "lineNumber": 317,
+            "text": "    except Exception as e:"
+          },
+          {
+            "lineNumber": 318,
+            "text": "        async with AsyncSessionLocal() as db:"
+          },
+          {
+            "lineNumber": 319,
+            "text": "            db.add(EmailRecord(to_email=payload.email, subject=\"\", type=f\"{payload.type}_reply\", submission_id=sub_id, status=\"failed\", error_msg=str(e)))"
+          },
+          {
+            "lineNumber": 320,
+            "text": "            await db.commit()"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 321,
+            "text": "    return {\"ok\": True}"
+          },
+          {
+            "lineNumber": 322
+          },
+          {
+            "lineNumber": 323
+          },
+          {
+            "lineNumber": 324,
+            "text": "if __name__ == \"__main__\":"
+          },
+          {
+            "lineNumber": 325,
+            "text": "    import uvicorn"
+          }
+        ],
+        "range": {
+          "endPosition": {
+            "column": 18,
+            "line": 324
+          },
+          "startPosition": {
+            "line": 268
+          }
+        },
+        "relativeWorkspacePath": "./ai-assistant/main.py",
+        "signatures": {
+          "ranges": [
+            {
+              "endPosition": {
+                "column": 1,
+                "line": 270
+              },
+              "startPosition": {
+                "column": 1,
+                "line": 269
+              }
+            },
+            {
+              "endPosition": {
+                "column": 5,
+                "line": 271
+              },
+              "startPosition": {
+                "column": 1,
+                "line": 270
+              }
+            }
+          ]
+        }
+      },
+      "score": 0.3679991066455841
+    },
+    {
+      "codeBlock": {
+        "detailedLines": [
+          {
+            "lineNumber": 255,
+            "text": "# ========== HP 表单 Webhook（表单提交后调用） =========="
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 256,
+            "text": "class FormWebhookPayload(BaseModel):"
+          },
+          {
+            "lineNumber": 257,
+            "text": "    type: str  # contact / partnership"
+          },
+          {
+            "lineNumber": 258,
+            "text": "    company: str"
+          },
+          {
+            "lineNumber": 259,
+            "text": "    contact: str"
+          },
+          {
+            "lineNumber": 260,
+            "text": "    phone: str"
+          },
+          {
+            "lineNumber": 261,
+            "text": "    email: str"
+          },
+          {
+            "lineNumber": 262,
+            "text": "    product_interest: str = \"\""
+          },
+          {
+            "lineNumber": 263,
+            "text": "    coop_type: str = \"\""
+          },
+          {
+            "lineNumber": 264,
+            "text": "    region: str = \"\""
+          },
+          {
+            "lineNumber": 265,
+            "text": "    message: str = \"\""
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 266,
+            "text": "    locale: str = \"zh\"  # zh/en/ja，用于回复邮件语言"
+          },
+          {
+            "lineNumber": 267
+          },
+          {
+            "lineNumber": 268
+          },
+          {
+            "lineNumber": 269,
+            "text": "@app.post(\"/api/webhook/form\")"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 270,
+            "text": "async def form_webhook(payload: FormWebhookPayload):"
+          },
+          {
+            "lineNumber": 271,
+            "text": "    \"\"\""
+          }
+        ],
+        "range": {
+          "endPosition": {
+            "line": 320
+          },
+          "startPosition": {
+            "column": 165,
+            "line": 251
+          }
+        },
+        "relativeWorkspacePath": "./ai-assistant/main.py",
+        "signatures": {}
+      },
+      "score": 0.3581258952617645
+    },
+    {
+      "codeBlock": {
+        "detailedLines": [
+          {
+            "isSignature": true,
+            "lineNumber": 17,
+            "text": "function saveSubmissions(data: unknown[]) {"
+          },
+          {
+            "lineNumber": 18,
+            "text": "  fs.mkdirSync(DATA_DIR, { recursive: true })"
+          },
+          {
+            "lineNumber": 19,
+            "text": "  fs.writeFileSync(SUBMISSIONS_FILE, JSON.stringify(data, null, 2), 'utf-8')"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 20,
+            "text": "}"
+          },
+          {
+            "lineNumber": 21
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 22,
+            "text": "export async function POST(req: NextRequest) {"
+          },
+          {
+            "lineNumber": 23,
+            "text": "  try"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 71,
+            "text": "}"
+          }
+        ],
+        "range": {
+          "endPosition": {
+            "column": 1,
+            "line": 70
+          },
+          "startPosition": {
+            "column": 1,
+            "line": 14
+          }
+        },
+        "relativeWorkspacePath": "./app/api/submit/contact/route.ts",
+        "signatures": {}
+      },
+      "score": 0.35672029852867126
+    },
+    {
+      "codeBlock": {
+        "detailedLines": [
+          {
+            "isSignature": true,
+            "lineNumber": 17,
+            "text": "function saveSubmissions(data: unknown[]) {"
+          },
+          {
+            "lineNumber": 18,
+            "text": "  fs.mkdirSync(DATA_DIR, { recursive: true })"
+          },
+          {
+            "lineNumber": 19,
+            "text": "  fs.writeFileSync(SUBMISSIONS_FILE, JSON.stringify(data, null, 2), 'utf-8')"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 20,
+            "text": "}"
+          },
+          {
+            "lineNumber": 21
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 22,
+            "text": "export async function POST(req: NextRequest) {"
+          },
+          {
+            "lineNumber": 23,
+            "text": "  try"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 73,
+            "text": "}"
+          }
+        ],
+        "range": {
+          "endPosition": {
+            "column": 1,
+            "line": 72
+          },
+          "startPosition": {
+            "column": 1,
+            "line": 14
+          }
+        },
+        "relativeWorkspacePath": "./app/api/submit/partnership/route.ts",
+        "signatures": {}
+      },
+      "score": 0.35113394260406494
+    },
+    {
+      "codeBlock": {
+        "detailedLines": [
+          {
+            "lineNumber": 166,
+            "text": "# ========== 表单数据 API（供前端读取） =========="
+          },
+          {
+            "lineNumber": 167,
+            "text": "@app.get(\"/api/submissions\")"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 168,
+            "text": "async def list_submissions():"
+          },
+          {
+            "lineNumber": 169,
+            "text": "    \"\"\"获取表单提交列表（含 HP 同步）\"\"\""
+          },
+          {
+            "lineNumber": 170,
+            "text": "    async with AsyncSessionLocal() as db:"
+          },
+          {
+            "lineNumber": 171,
+            "text": "        from sqlalchemy import select"
+          },
+          {
+            "lineNumber": 172,
+            "text": "        r = await db.execute(select(FormSubmission).order_by(FormSubmission.created_at.desc()).limit(100))"
+          },
+          {
+            "lineNumber": 173,
+            "text": "        rows = r.scalars().all()"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 174,
+            "text": "    return [{\"id\": x.id, \"type\": x.type, \"company\": x.company, \"contact\": x.contact, \"email\": x.email, \"message\": x.message, \"created_at\": x.created_at.isoformat()}]"
+          },
+          {
+            "lineNumber": 175
+          },
+          {
+            "lineNumber": 176
+          },
+          {
+            "lineNumber": 177,
+            "text": "# ========== 知识库管理（仅参考） =========="
+          },
+          {
+            "lineNumber": 178,
+            "text": "@app.post(\"/api/knowledge/upload\")"
+          },
+          {
+            "isSignature": true,
+            "lineNumber": 179,
+            "text": "async def upload_knowledge(file: UploadFile = File(...)):"
+          },
+          {
+            "lineNumber": 180,
+            "text": "    \"\"\"上传知识库：PDF/PPT/Excel/Word，仅用于 AI 参考\"\"\""
+          }
+        ],
+        "range": {
+          "endPosition": {
+            "line": 197
+          },
+          "startPosition": {
+            "column": 67,
+            "line": 162
+          }
+        },
+        "relativeWorkspacePath": "./ai-assistant/main.py",
+        "signatures": {}
+      },
+      "score": 0.3493334650993347
+    }
+  ]
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="semantic_search_full"><details>
+<summary>Tool use: **semantic_search_full**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+
+I have a clear picture:
+
+1. **Next.js API routes**: `app/api/submit/contact/route.ts` and `app/api/submit/partnership/route.ts` - they save to submissions file and optionally POST to `AI_ASSISTANT_WEBHOOK` (AI assistant Python service).
+
+2. **AI assistant** already has SMTP and sends customer-facing replies.
+
+The user wants:
+- Send emails to **support@sgflyingnets.com** (they said "同时通过邮件 support..." - I interpret: From address could be support, or all notifications go TO support + others)
+- Contact form: also TO **sales@sgflyingnets.com**
+- Partnership form: also TO **partner@sgflyingnets.com**
+
+Reading again: "同时通过邮件（support@sgflyingnets.com）分别发送给sales@..." 
+This could mean:
+A) Email **from** support@, **to** sales / partner (depending on form)
+B) Email **to** support AND sales/partner
+
+"分别" suggests different destinations per form type. "同时" might mean "also" in addition to existing flow.
+
+I'll cover both interpretations in the plan:
+- Most likely: **From**: support@ (or noreply with Reply-To); **To**: sales for contact, partner for partnership; **CC** support on both OR To: support + sales/partner.
+
+Actually re-read again: "通过邮件（support@sgflyingnets.com）分别发送给 sales@..." 
+So the channel is email, and support@ might be the sender identity. "分别发送给" = respectively send to sales vs partner.
+
+So:
+- Contact: send email (from support@?) to sales@sgflyingnets.com (and maybe copy support?)
+- Partnership: send email to partner@sgflyingnets.com (and copy support?)
+
+Or they want all to receive: support + sales for contact, support + partner for partnership.
+
+I'll present a clear recommended pattern:
+- **联系表单**：`To: sales@...`，`Cc: support@...`（或 To 两个地址）
+- **合作表单**：`To: partner@...`，`Cc: support@...`
+
+Or if they literally want one email that lists multiple recipients.
+
+I'll describe options without code.
+
+Implementation approaches:
+1. **Next.js route 内直接发信**：使用 Resend、SendGrid、AWS SES、Nodemailer+SMTP（与 ai-assistant 相同 SMTP 提供商）
+2. **在 AI webhook 里顺带发内部通知**：Python 已有 SMTP，可在处理 webhook 时多发一封给内部
+3. **队列/无服务器**：Inngest、Trigger.dev、单独 serverless function
+
+DNS: SPF/DKIM for support@ domain
+
+Security: API keys in env, rate limiting on form, honeypot
+
+I'll write in Chinese, structured, no code.
+</details></think>
+
+_**Agent (default)**_
+
+
+你们现在的链路是：前端分别 POST 到 `app/api/submit/contact` 与 `app/api/submit/partnership`，服务端落库/写 `submissions` 后，可选地 `fetch(AI_ASSISTANT_WEBHOOK)` 交给 Python 侧做 AI 回复邮件。在此基础上加「内部通知邮件」即可，下面是不改代码前提下的**实现方案说明**。
+
+---
+
+## 目标（按你的描述整理）
+
+- 用户提交后，除现有逻辑外，**再用邮件通知内部**。
+- **发件身份**：使用 `support@sgflyingnets.com`（作为 `From` 或实际 SMTP 登录账号对应的展示名/别名，需与邮箱服务商配置一致）。
+- **收件人**：
+  - **联系表单** → `sales@sgflyingnets.com`（并建议同时抄送或密送 `support@`，避免 sales 漏转单；若你坚持「只给 sales」，可只做 To: sales）。
+  - **合作表单** → `partner@sgflyingnets.com`（同样建议 `support@` 在 To/Cc 其一，便于统一留痕）。
+
+若你希望「两封都**必须**进 support 收件箱」，推荐：**To: 业务邮箱（sales/partner）+ Cc: support@**，或 **To: support@ + Cc: sales/partner**（按你们内部习惯二选一）。
+
+---
+
+## 方案 A：在 Next.js 两个 submit API 里发内部通知（常见、直观）
+
+在 `contact` / `partnership` 的 `POST` 里，在「校验通过、写入 submissions 成功」之后，异步发一封**纯内部通知**（HTML 或纯文本列出表单字段），失败只打日志、**不**影响用户 `200 ok`（与现在 webhook 的 `.catch(() => {})` 思路一致）。
+
+- **实现方式任选其一**：Resend / SendGrid / AWS SES / `nodemailer` + 企业 SMTP（与域名 `sgflyingnets.com` 一致）。
+- **配置**：`SMTP_*` 或 `RESEND_API_KEY` 等放环境变量；**禁止**把密钥写进仓库。
+- **域名与送达**：在 DNS 配好 **SPF、DKIM**（及必要时 DMARC），发件人填 `support@sgflyingnets.com` 才不容易进垃圾箱。
+- **优点**：与表单一一对应，逻辑集中；不依赖 AI 服务是否在线。  
+- **注意**：Vercel/Serverless 要注意冷启动与超时；若 SMTP 慢，用 `waitUntil` 或队列（见方案 C）。
+
+---
+
+## 方案 B：在 AI Webhook（Python）里顺带发内部邮件
+
+你们已有 `ai-assistant` 里读 SMTP、给客户发回复的逻辑。可在收到 `FormWebhookPayload` 后**多发一封**给 sales/partner（按 `payload.type` 分支）。
+
+- **优点**：SMTP 只维护一处；Next 侧零改动或只保证 webhook 必达。  
+- **缺点**：若未配置 `AI_ASSISTANT_WEBHOOK` 或 AI 服务故障，**内部通知也会断**；若你希望「只要表单成功就必须通知」，更稳妥的是 A 或与 A 并存。
+
+---
+
+## 方案 C：队列 / 后台任务（量大或 SMTP 慢时）
+
+把「发邮件」写成任务（如 Inngest、自建队列、或轻量「写 DB + worker 扫表」），API 只负责入队并快速返回。
+
+- **优点**：超时与重试可控，高峰不被拖垮。  
+- **缺点**：架构更重，一般表单量不大时可后上。
+
+---
+
+## 安全与合规（建议一并考虑）
+
+- **限流 / 防刷**：按 IP 或指纹限制提交频率，避免 support/sales 邮箱被灌爆。  
+- **内容**：邮件里可带提交类型、时间、字段摘要；客户邮箱可作 `Reply-To` 方便一线直接回复客户（若用 `support@` 作 From，Reply-To 设客户邮箱更合理）。  
+- **隐私**：邮件与现有 submissions 存储策略一致，避免把敏感信息打进不可控第三方日志。
+
+---
+
+## 小结建议
+
+- **最小闭环**：方案 **A**（Next 两个 route 各发一封内部通知），**From** 用 `support@`，**联系 → sales（+Cc support）**，**合作 → partner（+Cc support）**——除非你明确只要单一 To，再改成只发一个地址。  
+- 若强依赖「AI 与邮件基础设施合一」：可 **B 补充**，但不建议单独 **B** 作为唯一通知渠道，除非 webhook 永远开启且 SLA 接受。
+
+你确认一下收件组合是「只发 sales/partner」还是「support 也要进收件箱（To 或 Cc）」后，以后动代码时可以一次定稿字段与邮件模板。
