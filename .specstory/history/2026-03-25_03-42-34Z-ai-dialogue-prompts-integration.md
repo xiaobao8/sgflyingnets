@@ -3876,7 +3876,6 @@ _**User**_
 
 _**Agent (claude-4.6-opus-high-thinking)**_
 
-
 正在查找项目中是否已有三语提示词文件或可写入的初始内容。
 
 
@@ -3955,3 +3954,149 @@ Status: **completed**
 <summary>Tool use: **ripgrep_raw_search**</summary>
 
 </details></tool-use>
+
+_**Agent (claude-4.6-opus-high-thinking)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: /Users/aiden/Desktop/GuanWang/ai-assistant/app/database.py</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-high-thinking)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: /Users/aiden/Desktop/GuanWang/ai-assistant/app/config_store.py</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-high-thinking)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: /Users/aiden/Desktop/GuanWang/ai-assistant/app/database.py</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-high-thinking)**_
+
+<think><details><summary>Thought Process</summary>
+**Seeding chat prompts**
+
+I'm implementing conditional seeding of default chat prompts only when keys don't exist, to avoid overwriting user changes. I'm adding default chat prompts to the database only if they don't already exist. </details></think>
+
+_**Agent (claude-4.6-opus-high-thinking)**_
+
+正在实现：在数据库初始化时自动写入三语提示词；若仅有旧的 `prompt_chat_base`，则将其用于中文，英文与日文使用内置默认。
+
+
+
+_**Agent (claude-4.6-opus-high-thinking)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: /Users/aiden/Desktop/GuanWang/ai-assistant/app/config_store.py</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-high-thinking)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: /Users/aiden/Desktop/GuanWang/ai-assistant/app/database.py</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-high-thinking)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: /Users/aiden/Desktop/GuanWang/ai-assistant/app/database.py</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-high-thinking)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: python3 -m py_compile /Users/aiden/Desktop/GuanWang/ai-assistant/app/config_store.py /Users/aiden/Desktop/GuanWang/ai-assistant/app/database.py</summary>
+
+```bash
+python3 -m py_compile /Users/aiden/Desktop/GuanWang/ai-assistant/app/config_store.py /Users/aiden/Desktop/GuanWang/ai-assistant/app/database.py
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-high-thinking)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: /Users/aiden/Desktop/GuanWang/app/admin/ai/prompts/page.tsx</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-high-thinking)**_
+
+已经替你做完「你需要做的」这部分，具体如下。
+
+## 自动完成的内容
+
+1. **启动时写入数据库**（`config_store.seed_default_chat_prompts_if_missing`，在 `init_db()` 末尾调用）  
+   - 若库里还没有 `prompt_chat_zh` / `prompt_chat_en` / `prompt_chat_ja`，会自动插入：  
+     - **中文、英文、日文**各一份（与代码里 `DEFAULT_CHAT_PROMPTS` 一致）。  
+   - 若只有旧的 **`prompt_chat_base`**、且还没有 `prompt_chat_zh`：会把 **`prompt_chat_base` 当作中文提示词** 写入 `prompt_chat_zh`；英文、日文仍用内置英文/日文默认（避免把中文误填到英日里）。
+
+2. **管理页说明**（`app/admin/ai/prompts/page.tsx`）  
+   - 顶部增加简短说明：首次启动会自动落库、兼容旧 `prompt_chat_base` 的行为、可在页面里改。
+
+## 你现在还需要做什么
+
+- **一般情况**：**不用**再手动粘贴三份提示词；**重启一次 AI 助手服务**（或重建/启动容器），让 `init_db` 跑完即可。  
+- **若要换成你自己的三份文案**：在 **后台 → AI → 提示词** 里改对应语言并保存（会覆盖数据库里的内容）。  
+- **已有三语 key 的老库**：启动**不会**覆盖已有内容，逻辑仍是「缺哪个 key 才补哪个」。

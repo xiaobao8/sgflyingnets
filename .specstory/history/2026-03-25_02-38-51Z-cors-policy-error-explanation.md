@@ -798,7 +798,6 @@ I'm setting up nginx to forward /admin paths to the Python service while ensurin
 
 _**Agent (composer-2-fast)**_
 
-
 查看 Next.js 的 `/admin` 路由与 Python 服务的路径，避免 Nginx 转发与现有页面冲突。
 
 
@@ -879,13 +878,6 @@ _**Agent (composer-2-fast)**_
 
 _**Agent (composer-2-fast)**_
 
-
-
-
-
-
-_**Agent (composer-2-fast)**_
-
 <tool-use data-tool-type="search" data-tool-name="glob_file_search">
 <details>
 <summary>Tool use: **glob_file_search** • Searched codebase "" • **33** results in **1** directory</summary>
@@ -957,7 +949,6 @@ _**Agent (composer-2-fast)**_
 I found that Next.js admin pages are at `/admin` while Python APIs are at `/api/admin`, so forwarding `/admin` to Python would break Next.js pages. </details></think>
 
 _**Agent (composer-2-fast)**_
-
 
 发现 Next 与 Python 均使用 `/api/admin`，需核对重叠与前端调用方式。
 
@@ -1118,13 +1109,6 @@ I'm updating nginx config to route /api/submissions to Next and keep Python's /a
 
 _**Agent (composer-2-fast)**_
 
-
-
-
-
-
-_**Agent (composer-2-fast)**_
-
 <tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
 <details>
 <summary>Tool use: **ripgrep_raw_search**</summary>
@@ -1211,13 +1195,6 @@ I'm adjusting nginx location block order to place more specific matches before c
 
 _**Agent (composer-2-fast)**_
 
-
-
-
-
-
-_**Agent (composer-2-fast)**_
-
 <tool-use data-tool-type="read" data-tool-name="read_file_v2">
 <details><summary>Tool use: **read_file_v2** • Read file: /Users/aiden/Desktop/GuanWang/app/api/submissions/route.ts</summary>
 
@@ -1237,7 +1214,6 @@ _**Agent (composer-2-fast)**_
 I'll document how nginx routes /api/submissions to Next.js instead of Python backend. I'm updating nginx routing to handle /admin directly in Next.js and adding NEXT_PUBLIC_AI_ASSISTANT_API for same-origin Python API calls. </details></think>
 
 _**Agent (composer-2-fast)**_
-
 
 说明：`/admin` 不能整段转发到 Python —— 官网后台页面在 Next（`app/admin/`）。Python 的管理接口在 `/api/admin/...`，且与 Next 的 `/api/admin/account` 等并存。正在确认 `NEXT_PUBLIC_AI_ASSISTANT_API` 的用法，并给出可用的 Nginx 示例与可选的小改动。
 
@@ -1264,7 +1240,6 @@ _**Agent (composer-2-fast)**_
 I'm setting up nginx to route Python API paths to 8000 and other requests to 3000, with specific exclusions for overlapping namespaces. I'm adjusting nginx route order and using `^~` for exact prefix matching to ensure `/api/admin/account` is prioritized over `/api/admin/`. I'm updating nginx routes to handle Python-only paths and avoid conflicts with admin endpoints. </details></think>
 
 _**Agent (composer-2-fast)**_
-
 
 澄清：`/admin` 不能整段转发到 Python —— 官网后台 UI 在 Next 的 `app/admin/`，转发会整站不可用。Python 的管理 API 在 `/api/admin/...`（与 Next 的 `/api/admin/account` 等并存）。正在添加一份带注释的 Nginx 示例，并列出需设置的环境变量。
 
@@ -1313,7 +1288,6 @@ I'm updating the nginx config to use the correct relative path for the proxy inc
 I'm creating `nginx/proxy-common.conf` in the repo and will have users copy both files during deployment. </details></think>
 
 _**Agent (composer-2-fast)**_
-
 
 正在修复示例：`include proxy-common.conf` 在默认 Nginx 中不存在。添加可复制的 `proxy-headers` 片段并更新主配置。
 
@@ -1402,7 +1376,6 @@ _**Agent (composer-2-fast)**_
 I'm adding documentation about relative paths for nginx include directives to avoid common configuration issues. I'm updating the nginx config docs to clarify location order and prefix matching behavior. </details></think>
 
 _**Agent (composer-2-fast)**_
-
 
 ## 重要结论：不要用 `/admin` 指到 Python
 
@@ -1544,7 +1517,6 @@ I'm consolidating the nginx configuration to route paths to Next.js and Python s
 
 _**Agent (composer-2-fast)**_
 
-
 正在根据你当前的端口（Next `3000`、Python `8081`）整理成**单入口 443** 的完整配置，并说明是否保留 `8000` 的 `server` 块。
 
 
@@ -1571,7 +1543,6 @@ I'm updating the example config to use port 8081 with inline proxy headers to av
 
 _**Agent (composer-2-fast)**_
 
-
 正在将仓库中的示例更新为 `8081`，并给出可直接粘贴的完整配置。
 
 
@@ -1592,7 +1563,6 @@ _**Agent (composer-2-fast)**_
 </details></tool-use>
 
 _**Agent (composer-2-fast)**_
-
 
 下面按你现在的架构来：**Next 在 `127.0.0.1:3000`，Uvicorn 在 `127.0.0.1:8081`**。思路是：**只对外暴露 443**，在 443 上按路径分给 Next 或 Python；**不再**需要单独开一个 `listen 8000 ssl` 给浏览器调 Python（那样还要配 CORS）。
 

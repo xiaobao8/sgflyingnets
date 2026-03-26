@@ -1,6 +1,11 @@
+import type { Metadata } from 'next'
 import { readStore } from '@/lib/store'
 import { PageLayout } from '@/components/PageLayout'
 import { ContactContent } from '@/components/ContactContent'
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/contact' },
+}
 
 export default function ContactPage() {
   const store = readStore()

@@ -1,6 +1,11 @@
+import type { Metadata } from 'next'
 import { readStore } from '@/lib/store'
 import { PageLayout } from '@/components/PageLayout'
 import { BlogPageContent } from '@/components/BlogPageContent'
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/blog' },
+}
 
 export default function BlogPage() {
   const store = readStore()

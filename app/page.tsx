@@ -1,5 +1,12 @@
+import type { Metadata } from 'next'
 import { readStore } from '@/lib/store'
 import { HomeClient } from '@/components/HomeClient'
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: '/',
+  },
+}
 
 export default function Home() {
   const store = readStore()

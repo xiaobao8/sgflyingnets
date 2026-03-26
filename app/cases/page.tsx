@@ -1,6 +1,11 @@
+import type { Metadata } from 'next'
 import { readStore } from '@/lib/store'
 import { PageLayout } from '@/components/PageLayout'
 import { CasesContent } from '@/components/CasesContent'
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/cases' },
+}
 
 export default function CasesPage() {
   const store = readStore()

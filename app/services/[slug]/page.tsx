@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { readStore } from '@/lib/store'
 import { PageLayout } from '@/components/PageLayout'
@@ -8,6 +9,16 @@ const SLUG_TO_SERVICE: Record<string, number> = {
   security: 1,
   ai: 2,
   microsoft: 3,
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  if (SLUG_TO_SERVICE[slug] === undefined) return {}
+  return { alternates: { canonical: `/services/${slug}` } }
 }
 
 export default async function ServiceDetailPage({ params }: { params: Promise<{ slug: string }> }) {

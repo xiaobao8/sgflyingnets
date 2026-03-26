@@ -1,6 +1,11 @@
+import type { Metadata } from 'next'
 import { readStore } from '@/lib/store'
 import { PageLayout } from '@/components/PageLayout'
 import { PartnershipContent } from '@/components/PartnershipContent'
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/partnership' },
+}
 
 export default function PartnershipPage() {
   const store = readStore()
