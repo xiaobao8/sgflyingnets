@@ -9,9 +9,9 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.sgflyingnets.com'),
-  title: 'Flyingnets | AI · Security · Global',
-  description: 'Flyingnets — Singapore-headquartered. AI-powered enterprise efficiency and security solutions for enterprises worldwide.',
-  keywords: 'Flyingnets, AI, Security, Cloud, Global, Singapore, Enterprise, Efficiency, Solutions',
+  title: 'FLYINGNETS株式会社 | 日本・東京 | Microsoft Security・SOC・MSSP',
+  description: 'FLYINGNETS株式会社は東京を拠点に、Microsoft Securityを基盤としたSOC・MDR・MSSPサービスを提供しています。Azure Expert MSPとして、日本企業のセキュリティ強化とDX推進を支援します。',
+  keywords: 'FLYINGNETS,日本,東京,Microsoft Security,SOC,MDR,MSSP,Azure Expert MSP,AI,サイバーセキュリティ',
 }
 
 export default function RootLayout({
