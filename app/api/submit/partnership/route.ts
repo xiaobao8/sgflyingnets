@@ -40,7 +40,7 @@ async function sendAzureNotification(fields: Record<string, string>) {
   const clientSecret = process.env.AZURE_APP_CLIENT_SECRET
   const tenantId = process.env.AZURE_APP_TENANT_ID
   const mailbox = process.env.AZURE_MAILBOX
-  const notifyEmail = process.env.NOTIFY_EMAIL
+  const notifyEmail = process.env.NOTIFY_EMAIL_PARTNERSHIP
 
   if (!clientId || !clientSecret || !tenantId || !mailbox || !notifyEmail) {
     console.warn('Azure 邮件配置不完整，跳过邮件通知')
