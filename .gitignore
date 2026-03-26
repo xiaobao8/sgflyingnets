@@ -27,6 +27,7 @@ public/uploads/
 .vscode
 *.swp
 *.swo
+.specstory
 
 # OS
 .DS_Store
