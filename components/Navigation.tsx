@@ -51,6 +51,7 @@ export function Navigation({ config }: { config: Record<string, string> }) {
           <span className="relative flex items-center justify-center p-2 rounded-xl transition-all duration-300 group-hover:scale-[1.02] shadow-[0_0_24px_rgba(185,149,74,0.35),0_0_48px_rgba(255,255,255,0.15)] group-hover:shadow-[0_0_32px_rgba(185,149,74,0.45),0_0_64px_rgba(255,255,255,0.2)]">
             <img
               src="/images/logo.png"
+              style={{borderRadius: '7px'}}
               alt={config.company_name || 'FLYINGNETS'}
               className="h-6 sm:h-7 w-auto max-w-[90px] sm:max-w-[105px] object-contain relative z-10"
             />
