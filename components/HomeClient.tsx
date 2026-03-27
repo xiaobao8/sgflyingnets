@@ -8,12 +8,11 @@ import { HomeProductsSection } from '@/components/HomeProductsSection'
 import { HomeCertificationsSection } from '@/components/HomeCertificationsSection'
 import { HomeStoriesSection } from '@/components/HomeStoriesSection'
 import { HomePartnershipSection } from '@/components/HomePartnershipSection'
-import { HomeBlogSection } from '@/components/HomeBlogSection'
 import { HomeContactSection } from '@/components/HomeContactSection'
 import { Navigation } from '@/components/Navigation'
 
 export function HomeClient({ content }: { content: Content }) {
-  const defaultOrder = ['hero', 'about', 'services', 'products', 'certifications', 'stories', 'partnership', 'blog', 'contact']
+  const defaultOrder = ['hero', 'about', 'services', 'products', 'certifications', 'stories', 'partnership', 'contact']
   let layout = content.layoutConfig?.length
     ? [...content.layoutConfig].sort((a, b) => a.sort_order - b.sort_order)
     : defaultOrder.map((id, i) => ({ id, label: id, visible: true, sort_order: i }))
@@ -31,7 +30,6 @@ export function HomeClient({ content }: { content: Content }) {
           if (s.id === 'certifications') return <HomeCertificationsSection key={s.id} certifications={content.certifications} />
           if (s.id === 'stories') return <HomeStoriesSection key={s.id} stories={content.successStories} />
           if (s.id === 'partnership') return <HomePartnershipSection key={s.id} />
-          // if (s.id === 'blog') return <HomeBlogSection key={s.id} rssUrl={content.config.note_rss_url} />
           if (s.id === 'contact') return <HomeContactSection key={s.id} config={content.config} />
           return null
         })}

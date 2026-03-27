@@ -9,7 +9,6 @@ const publicRoutes = [
   '/products',
   '/cases',
   '/certifications',
-  '/blog',
   '/contact',
   '/partnership',
 ]
