@@ -21,6 +21,11 @@ from app.email_service import send_email, render_template
 from app.admin_routes import router as admin_router
 from app.config_store import get_config, get_config_multi, get_smtp_config, get_chat_prompt, get_email_prompt, normalize_chat_locale
 from app.meeting_trigger import check_meeting_agreed, save_chat_message, load_chat_history, send_internal_meeting_email
+from app.contact_collector import (
+    should_guide_contact, CONTACT_GUIDE_PROMPT,
+    extract_contact_from_messages, has_contact_info,
+    trigger_contact_summary_email,
+)
 from app.materials.library_service import match_material_for_email
 
 
@@ -97,6 +102,10 @@ async def chat(req: ChatRequest):
             await db.commit()
     await save_chat_message(req.session_id, "user", req.message)
 
+    # 统计当前会话的用户消息数（用于判断是否引导留资）
+    chat_history = await load_chat_history(req.session_id)
+    user_msg_count = sum(1 for m in chat_history if m["role"] == "user")
+
     # 1. 检索知识库（仅参考）
     refs = kb_store.search(req.message, top_k=3)
     ref_text = "\n".join(r.get("text", "") for r in refs) if refs else ""
@@ -111,6 +120,13 @@ async def chat(req: ChatRequest):
         "ja": "デフォルトは日本語で返答；ユーザーが中国語や英語で書いた場合はその言語で返答。",
     }
     sys_prompt += f"\n\n{lang_map[locale]}"
+
+    # 达到一定轮次后，引导客户留下联系方式
+    if should_guide_contact(user_msg_count):
+        contact_so_far = extract_contact_from_messages(chat_history)
+        if not has_contact_info(contact_so_far):
+            sys_prompt += CONTACT_GUIDE_PROMPT.get(locale, CONTACT_GUIDE_PROMPT["en"])
+
     if req.submission_context:
         ctx_label = {
             "zh": "客户已填表单信息（可精准回应）：",
@@ -151,7 +167,6 @@ async def chat(req: ChatRequest):
     if meeting_agreed:
         smtp_cfg = await get_smtp_config()
         if smtp_cfg.get("host"):
-            chat_history = await load_chat_history(req.session_id)
             await send_internal_meeting_email(
                 req.session_id,
                 chat_history,
@@ -159,6 +174,15 @@ async def chat(req: ChatRequest):
                 kb_store,
                 smtp_cfg,
             )
+
+    # 检测客户是否已留下联系方式，触发对话总结邮件
+    updated_history = await load_chat_history(req.session_id)
+    contact = extract_contact_from_messages(updated_history)
+    if has_contact_info(contact):
+        try:
+            await trigger_contact_summary_email(req.session_id, req.submission_context)
+        except Exception as e:
+            print(f"对话总结邮件发送异常: {e}")
 
     return ChatResponse(reply=reply, meeting_agreed=meeting_agreed)
 

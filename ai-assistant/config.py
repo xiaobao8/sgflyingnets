@@ -32,6 +32,13 @@ class Settings(BaseSettings):
     TOKEN_DAILY_LIMIT: int = 100000
     TOKEN_MONTHLY_LIMIT: int = 2000000
 
+    # Azure Graph API 邮件（用于聊天总结通知）
+    AZURE_APP_CLIENT_ID: Optional[str] = None
+    AZURE_APP_CLIENT_SECRET: Optional[str] = None
+    AZURE_APP_TENANT_ID: Optional[str] = None
+    AZURE_MAILBOX: Optional[str] = None
+    AZURE_CHAT_NOTIFY_EMAILS: Optional[str] = None  # 逗号分隔的收件人列表
+
     # 文件大小限制（MB）
     KNOWLEDGE_MAX_FILE_MB: int = 50
     MATERIAL_MAX_FILE_MB: int = 20
