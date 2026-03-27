@@ -214,7 +214,17 @@ async def chat(req: ChatRequest):
     # 检测客户是否表达同意会议（仅检测用户消息中的关键词）
     meeting_agreed = check_meeting_agreed(req.message)
 
-    if meeting_agreed:
+    # 提取用户联系信息（聊天消息 + 表单）
+    updated_history = await load_chat_history(req.session_id)
+    contact = extract_contact_from_messages(updated_history)
+    has_form_contact = bool(
+        req.submission_context
+        and (req.submission_context.get("email") or req.submission_context.get("phone"))
+    )
+    user_provided_info = has_contact_info(contact) or has_form_contact
+
+    # 只有当用户提供了联系信息，才生成总结并发送邮件
+    if meeting_agreed and user_provided_info:
         smtp_cfg = await get_smtp_config()
         if smtp_cfg.get("host"):
             await send_internal_meeting_email(
@@ -225,10 +235,7 @@ async def chat(req: ChatRequest):
                 smtp_cfg,
             )
 
-    # 检测客户是否已留下联系方式，触发对话总结邮件
-    updated_history = await load_chat_history(req.session_id)
-    contact = extract_contact_from_messages(updated_history)
-    if has_contact_info(contact):
+    if user_provided_info:
         try:
             await trigger_contact_summary_email(req.session_id, req.submission_context)
         except Exception as e:
