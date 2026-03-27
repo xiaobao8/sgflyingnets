@@ -5,6 +5,17 @@ import { PageLayout } from '@/components/PageLayout'
 import { BlogPostView } from '@/components/BlogPostView'
 import { Loader2 } from 'lucide-react'
 
+const ALLOWED_HOSTS = ['note.com', 'www.note.com']
+
+function isAllowedUrl(raw: string): boolean {
+  try {
+    const u = new URL(raw)
+    return u.protocol === 'https:' && ALLOWED_HOSTS.some(h => u.hostname === h || u.hostname.endsWith('.' + h))
+  } catch {
+    return false
+  }
+}
+
 function blogPostCanonical(searchParams: {
   url?: string | string[]
   title?: string | string[]
@@ -12,7 +23,7 @@ function blogPostCanonical(searchParams: {
   const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v)
   const url = one(searchParams.url)
   const title = one(searchParams.title)
-  if (!url) return '/blog/post'
+  if (!url || !isAllowedUrl(url)) return '/blog/post'
   const qs = new URLSearchParams()
   qs.set('url', url)
   if (title) qs.set('title', title)

@@ -12,7 +12,21 @@ const next = require('next')
 
 const PROXY_HEADERS = ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port']
 const ASSET_PATH = '/nxt/'
-const MIME = { '.js': 'application/javascript', '.css': 'text/css', '.woff2': 'font/woff2', '.woff': 'font/woff', '.ttf': 'font/ttf', '.map': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.gif': 'image/gif', '.svg': 'image/svg+xml' }
+const MIME = { '.js': 'application/javascript', '.css': 'text/css', '.woff2': 'font/woff2', '.woff': 'font/woff', '.ttf': 'font/ttf', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.gif': 'image/gif', '.svg': 'image/svg+xml' }
+
+const SECURITY_HEADERS = {
+  'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'SAMEORIGIN',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+}
+
+function setSecurityHeaders(res) {
+  for (const [k, v] of Object.entries(SECURITY_HEADERS)) {
+    res.setHeader(k, v)
+  }
+}
 
 function normalizeProxyHeaders(req) {
   for (const name of PROXY_HEADERS) {
@@ -99,9 +113,16 @@ const handle = app.getRequestHandler()
 app.prepare().then(() => {
   createServer((req, res) => {
     normalizeProxyHeaders(req)
-    // 对需要拦截修改的请求，禁用压缩，避免修改后 Content-Encoding 与内容不匹配导致 ERR_CONTENT_DECODING_FAILED
+    setSecurityHeaders(res)
     const parsedUrl = parse(req.url, true)
     const pathname = parsedUrl.pathname || ''
+
+    if (process.env.NODE_ENV === 'production' && pathname.endsWith('.map')) {
+      res.writeHead(404)
+      res.end()
+      return
+    }
+
     if ((pathname.startsWith('/images/') || pathname.startsWith('/uploads/')) && servePublicFile(req, res, pathname)) return
     if (pathname.startsWith('/nxt/') || pathname.startsWith('/next/') || pathname.startsWith('/_next/')) {
       if (serveStatic(req, res, pathname)) return

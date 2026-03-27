@@ -2,6 +2,7 @@
 AI 营销小助手 - FastAPI 主入口
 """
 import json
+import re
 import time
 import os
 from pathlib import Path
@@ -9,7 +10,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 from config import settings
 from app.database import init_db, AsyncSessionLocal, FormSubmission, SalesEmail, AIConfig, ChatSession, ChatMessage, EmailRecord, KnowledgeFile, MaterialFile, TokenUsage
@@ -77,22 +78,71 @@ def sync_hp_submissions():
     pass
 
 
+# ========== 输入清理 ==========
+_SSTI_PATTERN = re.compile(r'\{\{.*?\}\}|\{%.*?%\}|\$\{.*?\}')
+_PATH_TRAVERSAL_PATTERN = re.compile(r'(?:\.\./|\.\.\\|/etc/|/proc/|/dev/|[a-zA-Z]:\\)')
+_CMD_INJECTION_PATTERN = re.compile(
+    r'[;|&`$]|\b(?:exec|eval|import\s+os|__import__|subprocess|os\.(?:system|popen|exec)|open\s*\()\b',
+    re.IGNORECASE,
+)
+MAX_MESSAGE_LENGTH = 2000
+MAX_SESSION_ID_LENGTH = 128
+SESSION_ID_PATTERN = re.compile(r'^[a-zA-Z0-9_\-]+$')
+
+
+def sanitize_chat_input(text: str) -> str:
+    """Strip template injection, path traversal, and command injection patterns from user input."""
+    text = _SSTI_PATTERN.sub('', text)
+    text = _PATH_TRAVERSAL_PATTERN.sub('', text)
+    text = _CMD_INJECTION_PATTERN.sub('', text)
+    return text.strip()
+
+
 # ========== 聊天 API ==========
 class ChatRequest(BaseModel):
     session_id: str
     message: str
-    submission_context: dict | None = None  # 已填表单信息
-    locale: str | None = None  # zh/en/ja，界面语言，用于回复语言
+    submission_context: dict | None = None
+    locale: str | None = None
+
+    @field_validator('session_id')
+    @classmethod
+    def validate_session_id(cls, v: str) -> str:
+        if not v or len(v) > MAX_SESSION_ID_LENGTH:
+            raise ValueError('invalid session_id length')
+        if not SESSION_ID_PATTERN.match(v):
+            raise ValueError('session_id contains invalid characters')
+        return v
+
+    @field_validator('message')
+    @classmethod
+    def validate_message(cls, v: str) -> str:
+        if not v or not v.strip():
+            raise ValueError('message cannot be empty')
+        if len(v) > MAX_MESSAGE_LENGTH:
+            raise ValueError(f'message exceeds {MAX_MESSAGE_LENGTH} characters')
+        return v
+
+    @field_validator('locale')
+    @classmethod
+    def validate_locale(cls, v: str | None) -> str | None:
+        if v is not None and v not in ('zh', 'en', 'ja'):
+            return None
+        return v
 
 
 class ChatResponse(BaseModel):
     reply: str
-    meeting_agreed: bool = False  # 客户是否同意会议
+    meeting_agreed: bool = False
 
 
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat(req: ChatRequest):
     """悬浮球聊天：AI 以销售身份回复，自然引导会议（提示词从管理后台读取）"""
+    req.message = sanitize_chat_input(req.message)
+    if not req.message:
+        raise HTTPException(status_code=400, detail="Invalid message content")
+
     # 0. 确保会话存在并保存用户消息
     async with AsyncSessionLocal() as db:
         from sqlalchemy import select
@@ -202,22 +252,32 @@ async def list_submissions():
 @app.post("/api/knowledge/upload")
 async def upload_knowledge(file: UploadFile = File(...)):
     """上传知识库：PDF/PPT/Excel/Word，仅用于 AI 参考"""
-    ext = Path(file.filename or "").suffix.lower()
+    filename = Path(file.filename or "").name
+    if not filename or '..' in filename or '/' in filename or '\\' in filename:
+        raise HTTPException(400, "非法文件名")
+    ext = Path(filename).suffix.lower()
     if ext not in (".pdf", ".pptx", ".xlsx", ".docx"):
         raise HTTPException(400, "仅支持 PDF/PPT/Excel/Word")
+    content = await file.read()
+    max_bytes = settings.KNOWLEDGE_MAX_FILE_MB * 1024 * 1024
+    if len(content) > max_bytes:
+        raise HTTPException(400, f"文件大小超过 {settings.KNOWLEDGE_MAX_FILE_MB}MB 限制")
     os.makedirs("data/knowledge", exist_ok=True)
-    path = f"data/knowledge/{file.filename}"
+    path = f"data/knowledge/{filename}"
+    resolved = Path(path).resolve()
+    if not str(resolved).startswith(str(Path("data/knowledge").resolve())):
+        raise HTTPException(400, "非法文件路径")
     with open(path, "wb") as f:
-        f.write(await file.read())
+        f.write(content)
     try:
         text = await parse_file_async(path, ext[1:])
     except Exception as e:
         os.remove(path)
-        raise HTTPException(400, f"文件解析失败: {e}")
-    kb_store.add(text[:10000], {"file": file.filename, "text": text[:2000]})
+        raise HTTPException(400, "文件解析失败")
+    kb_store.add(text[:10000], {"file": filename, "text": text[:2000]})
     kb_store.save()
     async with AsyncSessionLocal() as db:
-        db.add(KnowledgeFile(filename=file.filename, file_path=path, file_type=ext[1:], parsed_text=text[:50000]))
+        db.add(KnowledgeFile(filename=filename, file_path=path, file_type=ext[1:], parsed_text=text[:50000]))
         await db.commit()
     return {"ok": True, "msg": "已入库，仅作 AI 参考，不可外发"}
 

@@ -111,7 +111,8 @@ export function BlogPageContent({ rssUrl, noteBaseUrl }: { rssUrl: string; noteB
               title="Flyingnets on note.com"
               className="w-full border-0 block"
               style={{ height: 'calc(100vh - 320px)', minHeight: '600px' }}
-              sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+              sandbox="allow-scripts allow-same-origin allow-popups"
+              referrerPolicy="no-referrer"
             />
           <div className="px-6 py-3 text-ink-500 text-xs text-center border-t border-ink-100">
             {t.home.blogPageFallback}{' '}
